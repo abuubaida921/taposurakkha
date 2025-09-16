@@ -213,47 +213,14 @@ class _DashboardViewState extends State<DashboardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Temperature input and alert
+              // Navigation to heatwave info
               Card(
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Current Temperature (°C)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _tempController,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(hintText: 'Enter temperature'),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              final value = double.tryParse(_tempController.text);
-                              setState(() => _temperature = value);
-                              _checkTemperatureAlert();
-                            },
-                            child: const Text('Check'),
-                          ),
-                        ],
-                      ),
-                      if (_temperature != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text('Temperature: ${_temperature!.toStringAsFixed(1)}°C'),
-                        ),
-                      if (_alertMessage != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(_alertMessage!, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                        ),
-                    ],
-                  ),
+                color: Colors.orange[50],
+                child: ListTile(
+                  leading: const Icon(Icons.info, color: Colors.orange),
+                  title: const Text('তাপপ্রবাহের ধারনা'),
+                  subtitle: const Text('What is a heatwave, types, causes, and more'),
+                  onTap: () => Get.toNamed('/heatwave_info'),
                 ),
               ),
               const SizedBox(height: 24),
@@ -262,7 +229,29 @@ class _DashboardViewState extends State<DashboardView> {
                 color: Colors.orange[50],
                 child: ListTile(
                   leading: const Icon(Icons.info, color: Colors.orange),
-                  title: const Text('Learn about Heatwaves'),
+                  title: const Text('তাপপ্রবাহের সময় সতর্কতা'),
+                  subtitle: const Text('What is a heatwave, types, causes, and more'),
+                  onTap: () => Get.toNamed('/heatwave_info'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Navigation to heatwave info
+              Card(
+                color: Colors.orange[50],
+                child: ListTile(
+                  leading: const Icon(Icons.info, color: Colors.orange),
+                  title: const Text('ওএসএম ম্যাপিং'),
+                  subtitle: const Text('What is a heatwave, types, causes, and more'),
+                  onTap: () => Get.toNamed('/heatwave_info'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Navigation to heatwave info
+              Card(
+                color: Colors.orange[50],
+                child: ListTile(
+                  leading: const Icon(Icons.info, color: Colors.orange),
+                  title: const Text('জরুরি হেল্পলাইন'),
                   subtitle: const Text('What is a heatwave, types, causes, and more'),
                   onTap: () => Get.toNamed('/heatwave_info'),
                 ),
