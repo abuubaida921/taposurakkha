@@ -14,6 +14,9 @@ class _DashboardViewState extends State<DashboardView> {
   bool _isAuthenticated = false;
   Map<String, dynamic>? _userData;
   bool _loading = true;
+  double? _temperature;
+  String? _alertMessage;
+  final TextEditingController _tempController = TextEditingController();
 
   @override
   void initState() {
@@ -45,6 +48,28 @@ class _DashboardViewState extends State<DashboardView> {
 
   void _login() {
     Get.toNamed('/login');
+  }
+
+  void _checkTemperatureAlert() {
+    if (_temperature == null) {
+      setState(() => _alertMessage = null);
+      return;
+    }
+    if (_temperature! >= 40) {
+      setState(() => _alertMessage = 'Severe Heatwave Alert! (≥ 40°C)');
+    } else if (_temperature! >= 38) {
+      setState(() => _alertMessage = 'Moderate Heatwave Alert! (38–40°C)');
+    } else if (_temperature! >= 36) {
+      setState(() => _alertMessage = 'Mild Heatwave Alert! (36–38°C)');
+    } else {
+      setState(() => _alertMessage = null);
+    }
+  }
+
+  @override
+  void dispose() {
+    _tempController.dispose();
+    super.dispose();
   }
 
   @override
@@ -182,47 +207,70 @@ class _DashboardViewState extends State<DashboardView> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (_isAuthenticated && _userData != null && _userData!['user'] != null) ...[
-              Text('Welcome, ${_userData!['user']['name']}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text('Email: ${_userData!['user']['email']}'),
-              const SizedBox(height: 16),
-            ],
-            ElevatedButton(
-              onPressed: () => Get.toNamed('/court'),
-              child: const Text('Court'),
-            ),
-            ElevatedButton(
-              onPressed: _isAuthenticated ? () => Get.toNamed('/lawyer') : null,
-              child: const Text('Lawyer'),
-            ),
-            ElevatedButton(
-              onPressed: _isAuthenticated ? () => Get.toNamed('/file_case') : null,
-              child: const Text('File a Case'),
-            ),
-            ElevatedButton(
-              onPressed: _isAuthenticated ? () => Get.toNamed('/legal_help') : null,
-              child: const Text('Ask for Legal Help'),
-            ),
-            ElevatedButton(
-              onPressed: () => Get.toNamed('/help_support'),
-              child: const Text('Help & Support'),
-            ),
-            const SizedBox(height: 32),
-            _isAuthenticated
-                ? ElevatedButton(
-                    onPressed: _logout,
-                    child: const Text('Logout'),
-                  )
-                : ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Login'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Temperature input and alert
+              Card(
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Current Temperature (°C)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _tempController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(hintText: 'Enter temperature'),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              final value = double.tryParse(_tempController.text);
+                              setState(() => _temperature = value);
+                              _checkTemperatureAlert();
+                            },
+                            child: const Text('Check'),
+                          ),
+                        ],
+                      ),
+                      if (_temperature != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text('Temperature: ${_temperature!.toStringAsFixed(1)}°C'),
+                        ),
+                      if (_alertMessage != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(_alertMessage!, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                        ),
+                    ],
                   ),
-          ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Navigation to heatwave info
+              Card(
+                color: Colors.orange[50],
+                child: ListTile(
+                  leading: const Icon(Icons.info, color: Colors.orange),
+                  title: const Text('Learn about Heatwaves'),
+                  subtitle: const Text('What is a heatwave, types, causes, and more'),
+                  onTap: () => Get.toNamed('/heatwave_info'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // ...existing dashboard content...
+            ],
+          ),
         ),
       ),
     );

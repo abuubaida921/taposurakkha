@@ -9,6 +9,7 @@ import '../modules/splash/splash_view.dart';
 import '../modules/help_support/help_support_view.dart';
 import '../modules/terms_conditions/terms_conditions_view.dart';
 import '../modules/about/about_view.dart';
+import '../modules/heatwave_info/heatwave_info_view.dart';
 
 class AppRoutes {
   static const splash = '/splash';
@@ -22,6 +23,7 @@ class AppRoutes {
   static const helpSupport = '/help_support';
   static const termsConditions = '/terms_conditions';
   static const about = '/about';
+  static const heatwaveInfo = '/heatwave_info';
 
   static final pages = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -32,6 +34,7 @@ class AppRoutes {
     GetPage(name: helpSupport, page: () => const HelpSupportView()),
     GetPage(name: termsConditions, page: () => const TermsConditionsView()),
     GetPage(name: about, page: () => const AboutView()),
+    GetPage(name: heatwaveInfo, page: () => const HeatwaveInfoView()),
     // GetPage(name: lawyer, page: () => const LawyerView()),
     // GetPage(name: fileCase, page: () => const FileCaseView()),
     // GetPage(name: legalHelp, page: () => const LegalHelpView()),
