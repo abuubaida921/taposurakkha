@@ -9,8 +9,10 @@ import '../modules/splash/splash_view.dart';
 import '../modules/help_support/help_support_view.dart';
 import '../modules/terms_conditions/terms_conditions_view.dart';
 import '../modules/about/about_view.dart';
-import '../modules/heatwave_info/heatwave_info_view.dart';
 
+import '../modules/heatwave_info/heatwave_safety_tips_view.dart';
+import '../modules/heatwave_info/osm_mapping_view.dart';
+import '../modules/heatwave_info/emergency_helpline_view.dart';
 class AppRoutes {
   static const splash = '/splash';
   static const login = '/login';
@@ -23,7 +25,9 @@ class AppRoutes {
   static const helpSupport = '/help_support';
   static const termsConditions = '/terms_conditions';
   static const about = '/about';
-  static const heatwaveInfo = '/heatwave_info';
+  static const heatwaveSafetyTips = '/heatwave_safety_tips';
+  static const osmMapping = '/osm_mapping';
+  static const emergencyHelpline = '/emergency_helpline';
 
   static final pages = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -34,9 +38,11 @@ class AppRoutes {
     GetPage(name: helpSupport, page: () => const HelpSupportView()),
     GetPage(name: termsConditions, page: () => const TermsConditionsView()),
     GetPage(name: about, page: () => const AboutView()),
-    GetPage(name: heatwaveInfo, page: () => const HeatwaveInfoView()),
     // GetPage(name: lawyer, page: () => const LawyerView()),
     // GetPage(name: fileCase, page: () => const FileCaseView()),
     // GetPage(name: legalHelp, page: () => const LegalHelpView()),
+    GetPage(name: heatwaveSafetyTips, page: () => const HeatwaveSafetyTipsView()),
+    GetPage(name: osmMapping, page: () => const OsmMappingView()),
+    GetPage(name: emergencyHelpline, page: () => const EmergencyHelplineView()),
   ];
 }

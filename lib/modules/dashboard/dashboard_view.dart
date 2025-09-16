@@ -274,19 +274,19 @@ class _DashboardViewState extends State<DashboardView> {
                     icon: Icons.warning_amber,
                     color: Colors.redAccent,
                     title: 'তাপপ্রবাহ সতর্কতা',
-                    onTap: () => Get.toNamed('/heatwave_info'), // Placeholder
+                    onTap: () => Get.toNamed('/heatwave_safety_tips'),
                   ),
                   _FeatureCard(
                     icon: Icons.map,
                     color: Colors.blue,
                     title: 'ওএসএম ম্যাপিং',
-                    onTap: () => Get.toNamed('/heatwave_info'), // Placeholder
+                    onTap: () => Get.toNamed('/osm_mapping'),
                   ),
                   _FeatureCard(
                     icon: Icons.phone_in_talk,
                     color: Colors.green,
                     title: 'জরুরি হেল্পলাইন',
-                    onTap: () => Get.toNamed('/heatwave_info'), // Placeholder
+                    onTap: () => Get.toNamed('/emergency_helpline'),
                   ),
                 ],
               ),
