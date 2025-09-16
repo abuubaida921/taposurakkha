@@ -12,11 +12,8 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-  bool _isAuthenticated = false;
-  Map<String, dynamic>? _userData;
   bool _loading = true;
   double? _temperature;
-  String? _alertMessage;
   final TextEditingController _tempController = TextEditingController();
 
   @override
@@ -26,12 +23,6 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   Future<void> _checkAuth() async {
-    _isAuthenticated = await SharedPreferencesHelper.getIsAuthenticated();
-    if (_isAuthenticated) {
-      _userData = await SharedPreferencesHelper.getLoginResponse();
-    } else {
-      _userData = null;
-    }
     setState(() {
       _loading = false;
     });
@@ -40,31 +31,11 @@ class _DashboardViewState extends State<DashboardView> {
   void _logout() async {
     await SharedPreferencesHelper.setIsAuthenticated(false);
     await SharedPreferencesHelper.setLoginResponse({});
-    setState(() {
-      _isAuthenticated = false;
-      _userData = null;
-    });
     ToastHelper.showInfo('You have been logged out');
   }
 
   void _login() {
     Get.toNamed('/login');
-  }
-
-  void _checkTemperatureAlert() {
-    if (_temperature == null) {
-      setState(() => _alertMessage = null);
-      return;
-    }
-    if (_temperature! >= 40) {
-      setState(() => _alertMessage = 'Severe Heatwave Alert! (≥ 40°C)');
-    } else if (_temperature! >= 38) {
-      setState(() => _alertMessage = 'Moderate Heatwave Alert! (38–40°C)');
-    } else if (_temperature! >= 36) {
-      setState(() => _alertMessage = 'Mild Heatwave Alert! (36–38°C)');
-    } else {
-      setState(() => _alertMessage = null);
-    }
   }
 
   @override
@@ -89,29 +60,7 @@ class _DashboardViewState extends State<DashboardView> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: _isAuthenticated && _userData != null && _userData!['user'] != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.white,
-                          backgroundImage: _userData!['user']['photo'] != null && _userData!['user']['photo'].toString().isNotEmpty
-                              ? NetworkImage('https://api.bicharachar.com/storage/${_userData!['user']['photo']}')
-                              : null,
-                          child: (_userData!['user']['photo'] == null || _userData!['user']['photo'].toString().isEmpty)
-                              ? const Icon(Icons.person, size: 32, color: Colors.grey)
-                              : null,
-                        ),
-                        const SizedBox(height: 10),
-                        Text('Welcome,', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                        Text('${_userData!['user']['name']}', style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                        if (_userData!['user']['email'] != null)
-                          Text('${_userData!['user']['email']}', style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                      ],
-                    )
-                  : const Center(child: Text('Welcome Guest', style: TextStyle(color: Colors.white, fontSize: 18))),
+              child: const Center(child: Text('Welcome Guest', style: TextStyle(color: Colors.white, fontSize: 18))),
             ),
             ListTile(
               leading: const Icon(Icons.home),
@@ -122,14 +71,6 @@ class _DashboardViewState extends State<DashboardView> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.account_balance),
-              title: const Text('Court'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/court');
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.support_agent),
               title: const Text('Help & Support'),
               onTap: () {
@@ -137,45 +78,7 @@ class _DashboardViewState extends State<DashboardView> {
                 Get.toNamed('/help_support');
               },
             ),
-            if (_isAuthenticated) ...[
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('Lawyer'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Get.toNamed('/lawyer');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.folder_special),
-                title: const Text('File a Case'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Get.toNamed('/file_case');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.help_center),
-                title: const Text('Ask for Legal Help'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Get.toNamed('/legal_help');
-                },
-              ),
-            ],
             const Divider(),
-            ListTile(
-              leading: Icon(_isAuthenticated ? Icons.logout : Icons.login),
-              title: Text(_isAuthenticated ? 'Logout' : 'Login'),
-              onTap: () {
-                Navigator.pop(context);
-                if (_isAuthenticated) {
-                  _logout();
-                } else {
-                  _login();
-                }
-              },
-            ),
             ListTile(
               leading: const Icon(Icons.description),
               title: const Text('Terms & Conditions'),
