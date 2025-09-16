@@ -283,6 +283,12 @@ class _DashboardViewState extends State<DashboardView> {
                     onTap: () => Get.toNamed('/osm_mapping'),
                   ),
                   _FeatureCard(
+                    icon: Icons.thermostat,
+                    color: Colors.red,
+                    title: 'হিট এলার্ট',
+                    onTap: () => Get.toNamed('/osm_mapping'),
+                  ),
+                  _FeatureCard(
                     icon: Icons.phone_in_talk,
                     color: Colors.green,
                     title: 'জরুরি হেল্পলাইন',
