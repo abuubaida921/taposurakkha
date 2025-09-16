@@ -5,6 +5,7 @@ import '../modules/auth/login_view.dart';
 import '../modules/auth/register_view.dart';
 import '../modules/dashboard/dashboard_view.dart';
 import '../modules/heatwave_info/heat_alert_view.dart';
+import '../modules/heatwave_info/heatwave_info_view.dart';
 import '../modules/splash/splash_view.dart';
 import '../modules/help_support/help_support_view.dart';
 import '../modules/terms_conditions/terms_conditions_view.dart';
@@ -24,6 +25,7 @@ class AppRoutes {
   static const helpSupport = '/help_support';
   static const termsConditions = '/terms_conditions';
   static const about = '/about';
+  static const heatwaveInfo = '/heatwave_info';
   static const heatwaveSafetyTips = '/heatwave_safety_tips';
   static const heatAlert = '/heat_alert';
   static const osmMapping = '/osm_mapping';
@@ -40,6 +42,7 @@ class AppRoutes {
     // GetPage(name: lawyer, page: () => const LawyerView()),
     // GetPage(name: fileCase, page: () => const FileCaseView()),
     // GetPage(name: legalHelp, page: () => const LegalHelpView()),
+    GetPage(name: heatwaveInfo, page: () => const HeatwaveInfoView()),
     GetPage(name: heatwaveSafetyTips, page: () => const HeatwaveSafetyTipsView()),
     GetPage(name: osmMapping, page: () => const OsmMappingView()),
     GetPage(name: heatAlert, page: () => const HeatAlertView()),

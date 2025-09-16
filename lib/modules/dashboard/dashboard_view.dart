@@ -269,7 +269,7 @@ class _DashboardViewState extends State<DashboardView> {
                     icon: Icons.info,
                     color: Colors.orange,
                     title: 'তাপপ্রবাহের ধারনা',
-                    onTap: () => Get.toNamed('/heatwave_info'),
+                    onTap: () => Get.toNamed(AppRoutes.heatwaveInfo),
                   ),
                   _FeatureCard(
                     icon: Icons.warning_amber,
