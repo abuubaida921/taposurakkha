@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taposurakkha/app/routes.dart';
 import 'package:taposurakkha/app/shared_preferences_helper.dart';
 import 'package:taposurakkha/app/toast_helper.dart';
 
@@ -286,7 +287,7 @@ class _DashboardViewState extends State<DashboardView> {
                     icon: Icons.thermostat,
                     color: Colors.red,
                     title: 'হিট এলার্ট',
-                    onTap: () => Get.toNamed('/osm_mapping'),
+                    onTap: () => Get.toNamed(AppRoutes.heatwaveSafetyTips),
                   ),
                   _FeatureCard(
                     icon: Icons.phone_in_talk,
