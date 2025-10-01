@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
             children: [
             FlutterLogo(size: 100),
             SizedBox(height: 24),
-            Text('Bichar Achar', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            Text('তাপসুরক্ষা', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
             CircularProgressIndicator(),
             ],
