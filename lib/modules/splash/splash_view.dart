@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-            FlutterLogo(size: 100),
-            SizedBox(height: 24),
+              SizedBox(width: 150, height: 150, child: Image.asset('assets/images/logo.png')),
+              SizedBox(height: 24),
             Text('তাপসুরক্ষা', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
             CircularProgressIndicator(),
