@@ -42,7 +42,7 @@ class AppRoutes {
     // GetPage(name: lawyer, page: () => const LawyerView()),
     // GetPage(name: fileCase, page: () => const FileCaseView()),
     // GetPage(name: legalHelp, page: () => const LegalHelpView()),
-    GetPage(name: heatwaveInfo, page: () => const HeatwaveInfoView()),
+    GetPage(name: heatwaveInfo, page: () =>  HeatwaveInfoView()),
     GetPage(name: heatwaveSafetyTips, page: () => const HeatwaveSafetyTipsView()),
     GetPage(name: osmMapping, page: () => const OsmMappingView()),
     GetPage(name: heatAlert, page: () => const HeatAlertView()),

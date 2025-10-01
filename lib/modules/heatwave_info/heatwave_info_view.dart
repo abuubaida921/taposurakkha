@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'model/heat_health_issue.dart';
+
 class HeatwaveInfoView extends StatelessWidget {
-  const HeatwaveInfoView({super.key});
+   HeatwaveInfoView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +21,18 @@ class HeatwaveInfoView extends StatelessWidget {
           children: [
             // Q1: What is a Heatwave?
             _buildInfoCard(
-              title: 'তাপপ্রবাহ কী?', // What is a Heatwave?
-              answer: 'তাপপ্রবাহ হলো একটি সময়কাল, যখন তাপমাত্রা স্বাভাবিকের চেয়ে উল্লেখযোগ্যভাবে বেশি হয়ে যায় এবং এটি কমপক্ষে ৩ দিন ধরে স্থায়ী হয়। সাধারণত, তাপমাত্রা ৩৬°C বা তার বেশি হয়ে থাকে।', // A heatwave is a period when the temperature becomes significantly higher than normal and lasts for at least 3 days. Usually, the temperature is 36°C or higher.
+              title: 'তাপপ্রবাহ কী?',
+              // What is a Heatwave?
+              answer: 'তাপপ্রবাহ হলো একটি সময়কাল, যখন তাপমাত্রা স্বাভাবিকের চেয়ে উল্লেখযোগ্যভাবে বেশি হয়ে যায় এবং এটি কমপক্ষে ৩ দিন ধরে স্থায়ী হয়। সাধারণত, তাপমাত্রা ৩৬°C বা তার বেশি হয়ে থাকে।',
+              // A heatwave is a period when the temperature becomes significantly higher than normal and lasts for at least 3 days. Usually, the temperature is 36°C or higher.
               icon: Icons.thermostat_outlined,
               color: Colors.blue,
             ),
             const SizedBox(height: 16),
             // Q2: Types of Heatwaves in Bangladesh
             _buildInfoCard(
-              title: 'বাংলাদেশে তাপপ্রবাহের প্রকারভেদ', // Types of Heatwaves in Bangladesh
+              title: 'বাংলাদেশে তাপপ্রবাহের প্রকারভেদ',
+              // Types of Heatwaves in Bangladesh
               icon: Icons.stacked_bar_chart,
               color: Colors.green,
               children: [
@@ -39,13 +44,16 @@ class HeatwaveInfoView extends StatelessWidget {
             const SizedBox(height: 16),
             // Q3: Causes of Heatwaves
             _buildInfoCard(
-              title: 'তাপপ্রবাহের কারণ কী?', // What are the Causes of Heatwaves?
+              title: 'তাপপ্রবাহের কারণ কী?',
+              // What are the Causes of Heatwaves?
               icon: Icons.whatshot_outlined,
               color: Colors.orange,
               children: [
-                _buildBulletPoint('উচ্চচাপ বায়ুমণ্ডলীয় অবস্থা, ফলে গরম বাতাস জমে থাকা'),
+                _buildBulletPoint(
+                    'উচ্চচাপ বায়ুমণ্ডলীয় অবস্থা, ফলে গরম বাতাস জমে থাকা'),
                 _buildBulletPoint('শুষ্ক মৌসুমি বায়ু প্রবাহ'),
-                _buildBulletPoint('নগর এলাকায় তাপদ্বীপ প্রভাব (Urban Heat Island Effect)'),
+                _buildBulletPoint(
+                    'নগর এলাকায় তাপদ্বীপ প্রভাব (Urban Heat Island Effect)'),
                 _buildBulletPoint('জলবায়ু পরিবর্তনের কারণে তাপমাত্রা বৃদ্ধি'),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -72,32 +80,37 @@ class HeatwaveInfoView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Q4: Symptoms of Heat-Related Health Issues
-            _buildInfoCard(
-              title: 'তাপপ্রবাহের সময় স্বাস্থ্যগত সংকটের লক্ষণ কী কী?', // What are the Symptoms of Heat-Related Health Issues?
-              icon: Icons.sick_outlined,
-              color: Colors.red,
-              children: [
-                _buildSymptomPoint(
-                  symptom: 'হিট এক্সহস্টশন',
-                  description: 'দুর্বলতা, মাথা ঘোরা, বমি বমি ভাব, ঠাণ্ডা, পিলপিলে ত্বক, দ্রুত ও দুর্বল পালস',
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.sick_outlined, color: Colors.red, size: 28),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'তাপপ্রবাহের সময় স্বাস্থ্যগত সংকটের লক্ষণ কী কী?',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    ...heatHealthIssues.map((issue) =>
+                        _buildHealthIssueCard(issue)).toList(),
+                  ],
                 ),
-                _buildSymptomPoint(
-                  symptom: 'হিট স্ট্রোক',
-                  description: 'ত্বক গরম ও শুষ্ক হওয়া, জ্ঞান হারানো, দ্রুত হার্টবিট, উচ্চ তাপমাত্রা (৪০°C বা বেশি)',
-                ),
-                _buildSymptomPoint(
-                  symptom: 'হিট ক্র্যাম্প',
-                  description: 'পেশীতে আকস্মিক ব্যথা বা সংকোচন, ঘাম হওয়া',
-                ),
-                _buildSymptomPoint(
-                  symptom: 'ডিহাইড্রেশন',
-                  description: 'তৃষ্ণা, শুকনো মুখ, কম প্রস্রাব, দুর্বলতা, চোখ শুকনো ও ডুবে যাওয়া',
-                ),
-                _buildSymptomPoint(
-                  symptom: 'ত্বকের সমস্যা',
-                  description: 'লালচে দাগ বা ফুসকুড়ি, ত্বকে জ্বালা বা চুলকানি',
-                ),
-              ],
+              ),
             ),
           ],
         ),
@@ -164,26 +177,101 @@ class HeatwaveInfoView extends StatelessWidget {
     );
   }
 
-  // Helper method for symptoms with descriptions
-  Widget _buildSymptomPoint({
-    required String symptom,
-    required String description,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '• $symptom:',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ],
+
+  final List<HeatHealthIssue> heatHealthIssues = [
+     HeatHealthIssue(
+      name: 'হিট এক্সহস্টশন',
+      cause: 'দীর্ঘ সময় গরমে থাকা ও পর্যাপ্ত পানি না খাওয়া',
+      symptom: 'দুর্বলতা, মাথা ঘোরা, বমি বমি ভাব, ঠাণ্ডা, পিলপিলে ত্বক, দ্রুত ও দুর্বল পালস',
+      imageAsset: 'assets/images/heat_exhaustion.png',
+    ),
+    HeatHealthIssue(
+      name: 'হিট স্ট্রোক',
+      cause: 'শরীরের তাপমাত্রা দ্রুত বেড়ে যাওয়া ও ঘাম না হওয়া',
+      symptom: 'ত্বক গরম ও শুষ্ক হওয়া, জ্ঞান হারানো, দ্রুত হার্টবিট, উচ্চ তাপমাত্রা (৪০°C বা বেশি)',
+      imageAsset: 'assets/images/heat_stroke.png',
+    ),
+    HeatHealthIssue(
+      name: 'হিট ক্র্যাম্প',
+      cause: 'গরমে অতিরিক্ত ঘাম ও লবণ-পানি ঘাটতি',
+      symptom: 'পেশীতে আকস্মিক ব্যথা বা সংকোচন, ঘাম হওয়া',
+      imageAsset: 'assets/images/heat_cramp.png',
+    ),
+    HeatHealthIssue(
+      name: 'ডিহাইড্রেশন',
+      cause: 'শরীর থেকে অতিরিক্ত পানি বের হয়ে যাওয়া',
+      symptom: 'তৃষ্ণা, শুকনো মুখ, কম প্রস্রাব, দুর্বলতা, চোখ শুকনো ও ডুবে যাওয়া',
+      imageAsset: 'assets/images/dehydration.png',
+    ),
+    HeatHealthIssue(
+      name: 'ত্বকের সমস্যা',
+      cause: 'গরমে ঘাম জমে ত্বকে সমস্যা সৃষ্টি',
+      symptom: 'লালচে দাগ বা ফুসকুড়ি, ত্বকে জ্বালা বা চুলকানি',
+      imageAsset: 'assets/images/skin_problem.png',
+    ),
+  ];
+
+  // Helper method to build a health issue card
+  Widget _buildHealthIssueCard(HeatHealthIssue issue) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      color: Colors.red[50],
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                issue.imageAsset,
+                width: 64,
+                height: 64,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    Container(
+                      width: 64,
+                      height: 64,
+                      color: Colors.grey[300],
+                      child: const Icon(
+                          Icons.image_not_supported, color: Colors.grey),
+                    ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    issue.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.red),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('কারণ: ',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(child: Text(issue.cause)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('লক্ষণ: ',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(child: Text(issue.symptom)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
