@@ -47,7 +47,27 @@ class HeatwaveInfoView extends StatelessWidget {
                 _buildBulletPoint('শুষ্ক মৌসুমি বায়ু প্রবাহ'),
                 _buildBulletPoint('নগর এলাকায় তাপদ্বীপ প্রভাব (Urban Heat Island Effect)'),
                 _buildBulletPoint('জলবায়ু পরিবর্তনের কারণে তাপমাত্রা বৃদ্ধি'),
-                _buildBulletPoint('বর্ষার আগে গরমের সময় সূর্যের আলো খুব তীব্র হয়, মাটিতে আর্দ্রতা কম থাকে, আর গরম বাতাস ও শুকনো আবহাওয়া মিলে হিটওয়েভ তৈরি করে।'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.deepOrange,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'বর্ষার আগে গরমের সময় : ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'সূর্যের আলো খুব তীব্র হয়, মাটিতে আর্দ্রতা কম থাকে, আর গরম বাতাস ও শুকনো আবহাওয়া মিলে হিটওয়েভ তৈরি করে।',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
