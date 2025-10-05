@@ -222,6 +222,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emergencyHelpline => 'Emergency Helpline';
 
   @override
+  String get emergencyHelplineTitle => 'Emergency Helpline';
+
+  @override
+  String get emergencyHelplineQuestion => 'What is the Emergency Helpline Number?';
+
+  @override
+  String get emergencyHelplineQuestionSubtitle => '(What is the Emergency Helpline Number?)';
+
+  @override
+  String get emergencyHelplineQuestionContent => 'Collect local health department and ambulance service numbers for heatwave-related illnesses.';
+
+  @override
+  String get emergencyHelplineServicesTitle => 'Emergency Services';
+
+  @override
+  String get emergencyHelplineService1Title => 'Emergency assistance for heatwave-related illnesses';
+
+  @override
+  String get emergencyHelplineService1Subtitle => '(Emergency assistance for heatwave-related illnesses)';
+
+  @override
+  String get emergencyHelplineService2Title => 'Local organizations for emergency health assistance';
+
+  @override
+  String get emergencyHelplineService2Subtitle => '(Local organizations for emergency health assistance)';
+
+  @override
+  String get emergencyHelplineService3Title => 'Ambulance and emergency medical services';
+
+  @override
+  String get emergencyHelplineService3Subtitle => '(Ambulance and emergency medical services)';
+
+  @override
   String get heatwaveInfoTitle => 'Understanding Heatwaves';
 
   @override

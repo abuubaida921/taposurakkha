@@ -222,6 +222,39 @@ class AppLocalizationsBn extends AppLocalizations {
   String get emergencyHelpline => 'জরুরি হেল্পলাইন';
 
   @override
+  String get emergencyHelplineTitle => 'জরুরি হেল্পলাইন';
+
+  @override
+  String get emergencyHelplineQuestion => 'জরুরি হেল্পলাইন নম্বর কী?';
+
+  @override
+  String get emergencyHelplineQuestionSubtitle => '(What is the Emergency Helpline Number?)';
+
+  @override
+  String get emergencyHelplineQuestionContent => 'তাপপ্রবাহজনিত রোগের জন্য স্থানীয় স্বাস্থ্য বিভাগ ও অ্যাম্বুলেন্স সেবা নম্বর সংগ্রহ করুন।';
+
+  @override
+  String get emergencyHelplineServicesTitle => 'জরুরি পরিষেবা';
+
+  @override
+  String get emergencyHelplineService1Title => 'তাপপ্রবাহজনিত রোগের জন্য দ্রুত সহায়তা';
+
+  @override
+  String get emergencyHelplineService1Subtitle => '(Emergency assistance for heatwave-related illnesses)';
+
+  @override
+  String get emergencyHelplineService2Title => 'স্বাস্থ্য বিভাগের জরুরি সহায়তার জন্য স্থানীয় সংস্থা';
+
+  @override
+  String get emergencyHelplineService2Subtitle => '(Local organizations for emergency health assistance)';
+
+  @override
+  String get emergencyHelplineService3Title => 'অ্যাম্বুলেন্স সেবা এবং জরুরি চিকিৎসা পরিষেবা';
+
+  @override
+  String get emergencyHelplineService3Subtitle => '(Ambulance and emergency medical services)';
+
+  @override
   String get heatwaveInfoTitle => 'তাপপ্রবাহের ধারনা';
 
   @override

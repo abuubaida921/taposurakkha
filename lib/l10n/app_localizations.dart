@@ -521,6 +521,72 @@ abstract class AppLocalizations {
   /// **'Emergency Helpline'**
   String get emergencyHelpline;
 
+  /// No description provided for @emergencyHelplineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Helpline'**
+  String get emergencyHelplineTitle;
+
+  /// No description provided for @emergencyHelplineQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Emergency Helpline Number?'**
+  String get emergencyHelplineQuestion;
+
+  /// No description provided for @emergencyHelplineQuestionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'(What is the Emergency Helpline Number?)'**
+  String get emergencyHelplineQuestionSubtitle;
+
+  /// No description provided for @emergencyHelplineQuestionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect local health department and ambulance service numbers for heatwave-related illnesses.'**
+  String get emergencyHelplineQuestionContent;
+
+  /// No description provided for @emergencyHelplineServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Services'**
+  String get emergencyHelplineServicesTitle;
+
+  /// No description provided for @emergencyHelplineService1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency assistance for heatwave-related illnesses'**
+  String get emergencyHelplineService1Title;
+
+  /// No description provided for @emergencyHelplineService1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'(Emergency assistance for heatwave-related illnesses)'**
+  String get emergencyHelplineService1Subtitle;
+
+  /// No description provided for @emergencyHelplineService2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Local organizations for emergency health assistance'**
+  String get emergencyHelplineService2Title;
+
+  /// No description provided for @emergencyHelplineService2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'(Local organizations for emergency health assistance)'**
+  String get emergencyHelplineService2Subtitle;
+
+  /// No description provided for @emergencyHelplineService3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ambulance and emergency medical services'**
+  String get emergencyHelplineService3Title;
+
+  /// No description provided for @emergencyHelplineService3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'(Ambulance and emergency medical services)'**
+  String get emergencyHelplineService3Subtitle;
+
   /// No description provided for @heatwaveInfoTitle.
   ///
   /// In en, this message translates to:

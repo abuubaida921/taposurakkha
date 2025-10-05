@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class EmergencyHelplineView extends StatelessWidget {
   const EmergencyHelplineView({super.key});
 
@@ -13,9 +15,9 @@ class EmergencyHelplineView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'জরুরি হেল্পলাইন',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          AppLocalizations.of(context)!.emergencyHelplineTitle,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: primaryColor,
         elevation: 0,
@@ -28,10 +30,9 @@ class EmergencyHelplineView extends StatelessWidget {
           children: [
             // Professional Card for FAQ
             _buildInfoCard(
-              title: 'জরুরি হেল্পলাইন নম্বর কী?',
-              subtitle: '(What is the Emergency Helpline Number?)',
-              content:
-              'তাপপ্রবাহজনিত রোগের জন্য স্থানীয় স্বাস্থ্য বিভাগ ও অ্যাম্বুলেন্স সেবা নম্বর সংগ্রহ করুন।',
+              title: AppLocalizations.of(context)!.emergencyHelplineQuestion,
+              // subtitle: AppLocalizations.of(context)!.emergencyHelplineQuestionSubtitle,
+              content: AppLocalizations.of(context)!.emergencyHelplineQuestionContent,
               icon: Icons.question_answer_outlined,
               primaryColor: primaryColor,
               textColor: textColor,
@@ -40,22 +41,22 @@ class EmergencyHelplineView extends StatelessWidget {
             const SizedBox(height: 16),
             // Professional Card for Services
             _buildServicesCard(
-              title: 'জরুরি পরিষেবা',
+              title: AppLocalizations.of(context)!.emergencyHelplineServicesTitle,
               icon: Icons.local_hospital_outlined,
               items: [
                 _ServiceItem(
-                  title: 'তাপপ্রবাহজনিত রোগের জন্য দ্রুত সহায়তা',
-                  subtitle: '(Emergency assistance for heatwave-related illnesses)',
+                  title: AppLocalizations.of(context)!.emergencyHelplineService1Title,
+                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService1Subtitle,
                   icon: Icons.phone_in_talk_outlined,
                 ),
                 _ServiceItem(
-                  title: 'স্বাস্থ্য বিভাগের জরুরি সহায়তার জন্য স্থানীয় সংস্থা',
-                  subtitle: '(Local organizations for emergency health assistance)',
+                  title: AppLocalizations.of(context)!.emergencyHelplineService2Title,
+                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService2Subtitle,
                   icon: Icons.public_outlined,
                 ),
                 _ServiceItem(
-                  title: 'অ্যাম্বুলেন্স সেবা এবং জরুরি চিকিৎসা পরিষেবা',
-                  subtitle: '(Ambulance and emergency medical services)',
+                  title: AppLocalizations.of(context)!.emergencyHelplineService3Title,
+                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService3Subtitle,
                   icon: Icons.phone_in_talk,
                 ),
               ],
@@ -174,11 +175,6 @@ class EmergencyHelplineView extends StatelessWidget {
                         Text(
                           '• ${item.title}',
                           style: TextStyle(fontSize: 16, color: textColor),
-                        ),
-                        Text(
-                          item.subtitle,
-                          style: TextStyle(
-                              fontSize: 14, color: secondaryTextColor),
                         ),
                       ],
                     ),
