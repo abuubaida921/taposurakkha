@@ -229,34 +229,98 @@ class _FeatureCard extends StatelessWidget {
   }
 }
 
-// Weather forecast list widget
+// Weather forecast horizontal card list widget
 class _WeatherForecastList extends StatelessWidget {
   final List<WeatherForecastDay> forecast;
   const _WeatherForecastList({required this.forecast});
 
+  IconData _getWeatherIcon(double avgTemp, double humidity) {
+    if (humidity > 85) {
+      return Icons.water_drop;
+    } else if (avgTemp >= 35) {
+      return Icons.wb_sunny;
+    } else if (avgTemp >= 30) {
+      return Icons.wb_cloudy;
+    } else {
+      return Icons.cloud;
+    }
+  }
+
+  Color _getTempColor(double temp) {
+    if (temp >= 35) {
+      return Colors.redAccent;
+    } else if (temp >= 30) {
+      return Colors.orangeAccent;
+    } else if (temp >= 25) {
+      return Colors.blueAccent;
+    } else {
+      return Colors.lightBlue;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: forecast.length,
-      separatorBuilder: (_, __) => const Divider(height: 8),
-      itemBuilder: (context, i) {
-        final day = forecast[i];
-        return Card(
-          child: ListTile(
-            leading: Icon(Icons.calendar_today, color: Colors.teal),
-            title: Text(DateFormat('MMM d, yyyy').format(DateTime.parse(day.date))),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Avg Temp: ${day.avgTemp.forecast.toStringAsFixed(1)}°C (Min: ${day.minTemp.forecast.toStringAsFixed(1)}°C, Max: ${day.maxTemp.forecast.toStringAsFixed(1)}°C)'),
-                Text('Humidity: ${day.avgHumidity.forecast.toStringAsFixed(0)}%'),
+    return SizedBox(
+      height: 160,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: forecast.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        itemBuilder: (context, i) {
+          final day = forecast[i];
+          final date = DateTime.parse(day.date);
+          final dayOfWeek = DateFormat('E').format(date); // Mon, Tue, etc.
+          final icon = _getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast);
+          final tempColor = _getTempColor(day.avgTemp.forecast);
+          return Container(
+            width: 130,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
-          ),
-        );
-      },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(icon, color: tempColor, size: 26),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: tempColor),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '↑${day.maxTemp.forecast.toStringAsFixed(0)}° ↓${day.minTemp.forecast.toStringAsFixed(0)}°',
+                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.water_drop, size: 16, color: Colors.blueAccent),
+                          const SizedBox(width: 2),
+                          Text('${day.avgHumidity.forecast.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 13)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
