@@ -17,67 +17,141 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Importance of Forecast Section
-            _buildInfoCard(
-              title: 'তাপপ্রবাহের পূর্বাভাসের গুরুত্ব', // The Importance of Heatwave Forecast
-              icon: Icons.lightbulb_outline,
-              color: Colors.blue,
-              children: [
-                _buildBulletPoint('আগাম সতর্কতা দিয়ে স্বাস্থ্য সুরক্ষা ও পানি সংরক্ষণে সহায়তা'),
-                _buildBulletPoint('কৃষি ও শিল্পক্ষেত্রে ক্ষতি কমানো'),
-                _buildBulletPoint('জরুরি সেবা ও হাসপাতালের প্রস্তুতি গ্রহণ সহজ করা'),
-              ],
-            ),
             const SizedBox(height: 16),
-            // 7-Day Forecast Section
+            // Heatwave Q&A Section
             _buildInfoCard(
-              title: 'আগামী ৭ দিনের পূর্বাভাস', // Forecast for the next 7 days
-              icon: Icons.access_time,
-              color: Colors.orange,
+              title: 'তাপপ্রবাহের সময় করণীয় ও সতর্কতা',
+              icon: Icons.question_answer,
+              color: Colors.teal,
               children: [
+                // Q1
                 const Text(
-                  'তাপমাত্রা সারণী', // Temperature Chart
+                  'Q1: তাপপ্রবাহের সময় সতর্কতা কী কী নেওয়া উচিত?',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
-                _buildTemperatureRow(
-                  level: 'সতর্কতা', // Warning
-                  tempRange: '৩৫°C - ৩৮°C',
-                  description: 'গরম আবহাওয়ার কারণে শিশু, বৃদ্ধ এবং অসুস্থ মানুষদের বাইরে বের না হওয়ার পরামর্শ দেওয়া হবে।',
-                  color: Colors.green,
+                _buildQAnswer([
+                  'পর্যাপ্ত পানি পান করুন',
+                  'শরীরের যত্নে সতর্ক থাকুন',
+                  'ছায়া বা জানালায় খুব বেশি সময় না কাটান',
+                  'বিশেষত শিশু ও বৃদ্ধদের জন্য বাড়তি সতর্কতা নিন',
+                ]),
+                const SizedBox(height: 16),
+                // Q2
+                const Text(
+                  'Q2: কী ধরনের মানুষের সতর্কতা নেওয়া উচিত?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                _buildTemperatureRow(
-                  level: 'ঝুঁকি', // Risk
-                  tempRange: '৩৯°C - ৪২°C',
-                  description: 'পানির সংকট এবং তাপজনিত সমস্যাগুলি বৃদ্ধি পাবে। রোগী সেবা ও জরুরি চিকিৎসা প্রস্তুতির উপর গুরুত্ব দিতে হবে।',
-                  color: Colors.yellow[800]!,
+                const SizedBox(height: 8),
+                _buildQGroup(
+                  group: 'শিশুদের জন্য',
+                  karon: 'তাপপ্রবাহে শিশুদের তাপমাত্রা দ্রুত বাড়তে পারে।',
+                  lokkho: 'অস্বস্তি, ঘাম, দুর্বলতা, খিটখিটে ভাব।',
+                  chobi: 'assets/images/child.png',
+                  tips: [
+                    'সূর্যের সরাসরি আলো এড়িয়ে চলুন',
+                    'হালকা, ঢিলেঢালা পোশাক পরান',
+                    'পর্যাপ্ত পানি ও তরল খাবার দিন',
+                    'গরম সময় বাইরে না যাওয়ার চেষ্টা করুন',
+                  ],
                 ),
-                _buildTemperatureRow(
-                  level: 'হুঁশিয়ারি', // Alert
-                  tempRange: '৪০°C বা তার বেশি',
-                  description: 'তীব্র তাপপ্রবাহ, কৃষি ও জলসম্পদ ক্ষতিগ্রস্ত হতে পারে। সবার জন্য নিরাপদ আশ্রয়স্থলে থাকার পরামর্শ থাকবে।',
-                  color: Colors.red,
+                _buildQGroup(
+                  group: 'বয়স্কদের জন্য',
+                  karon: 'বয়স্কদের শরীরের তাপ নিয়ন্ত্রণ কম কার্যকর।',
+                  lokkho: 'বমি, মাথা ঘোরা, দুর্বলতা, দ্রুত ক্লান্তি।',
+                  chobi: 'assets/images/elderly.png',
+                  tips: [
+                    'গরম সময় বাইরে না থাকার পরামর্শ',
+                    'ফ্যান বা কুলার ব্যবহার করুন',
+                    'পর্যাপ্ত পানি পান নিশ্চিত করুন',
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Warning Levels Section
-            _buildInfoCard(
-              title: 'সতর্কতা স্তর', // Warning Levels
-              icon: Icons.notifications_active_outlined,
-              color: Colors.red,
-              children: [
-                _buildWarningLevelRow(
-                  color: Colors.red,
-                  text: 'লাল সংকেত: তীব্র তাপপ্রবাহ, দীর্ঘস্থায়ী গরম আবহাওয়া।',
+                _buildQGroup(
+                  group: 'তরুণদের জন্য',
+                  karon: 'বাইরের কাজ বা কসরত বেশি হয়।',
+                  lokkho: 'ঘাম, ক্লান্তি, মাথা ব্যথা।',
+                  chobi: 'assets/images/young.png',
+                  tips: [
+                    'বাইরের কাজের সময় বিশ্রাম নিন',
+                    'ছাতা বা ক্যাপ ব্যবহার করুন',
+                    'পর্যাপ্ত পানি পান করুন',
+                  ],
                 ),
-                _buildWarningLevelRow(
-                  color: Colors.yellow,
-                  text: 'হলুদ সংকেত: মাঝারি তাপমাত্রা বৃদ্ধি, কিছু সতর্কতা প্রয়োজন।',
+                _buildQGroup(
+                  group: 'গর্ভবতী নারীদের জন্য',
+                  karon: 'তাপপ্রবাহে গর্ভবতী নারীদের ঝুঁকি বেশি।',
+                  lokkho: 'বমি, মাথা ঘোরা, ক্লান্তি।',
+                  chobi: 'assets/images/pregnant.png',
+                  tips: [
+                    'গরম সময় বাইরে না থাকার চেষ্টা করুন',
+                    'ঠান্ডা পানীয় পান করুন',
+                    'হালকা পোশাক পরুন',
+                  ],
                 ),
-                _buildWarningLevelRow(
-                  color: Colors.green,
-                  text: 'সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।',
+                _buildQGroup(
+                  group: 'বাইরের শ্রমিকদের জন্য',
+                  karon: 'সূর্যের নিচে কাজ করতে হয়।',
+                  lokkho: 'ঘাম, ক্লান্তি, মাথা ঘোরা।',
+                  chobi: 'assets/images/worker.png',
+                  tips: [
+                    'পর্যাপ্ত বিশ্রাম নিন',
+                    'পানি ও ইলেক্ট্রোলাইট পান করুন',
+                    'ছায়ায় কাজ করুন',
+                  ],
+                ),
+                _buildQGroup(
+                  group: 'অসুস্থ বা দীর্ঘমেয়াদী রোগীদের জন্য',
+                  karon: 'তাপপ্রবাহে অসুস্থদের ঝুঁকি বেশি।',
+                  lokkho: 'দুর্বলতা, শ্বাসকষ্ট, মাথা ঘোরা।',
+                  chobi: 'assets/images/sick.png',
+                  tips: [
+                    'গরম সময় বাইরে না যাওয়ার চেষ্টা করুন',
+                    'পর্যাপ্ত পানি পান করুন',
+                    'ডাক্তারের পরামর্শ নিন',
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Q3
+                const Text(
+                  'Q3: তাপপ্রবাহের সময় কীভাবে শরীর ঠান্ডা রাখা যায়?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _buildQAnswer([
+                  'ছায়ায় থাকুন এবং ঠান্ডা পরিবেশে বিশ্রাম নিন',
+                  'ঠান্ডা পানি পান করুন এবং হালকা কাপড় পরুন',
+                  'হাত ও মুখ ঠান্ডা পানি দিয়ে ধুয়ে নিন',
+                ]),
+                const SizedBox(height: 16),
+                // Q4
+                const Text(
+                  'Q4: বাড়ি ঠান্ডা রাখার উপায় কী?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _buildQAnswer([
+                  'জানালা ও দরজা বন্ধ রাখুন',
+                  'হালকা পর্দা ব্যবহার করুন',
+                  'ফ্যান ব্যবহার করুন',
+                ]),
+                const SizedBox(height: 16),
+                // Q5
+                const Text(
+                  'Q5: খাবারের পরামর্শ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _buildQAnswer([
+                  'তরল ও সহজপাচ্য খাবার খান',
+                  'ভাজা ও ভারী খাবার এড়িয়ে চলুন',
+                  'ফলমূল ও শাকসবজি বেশি খান',
+                  'পর্যাপ্ত প্রোটিন ও মিনারেল যুক্ত খাবার খান',
+                ]),
+                const SizedBox(height: 8),
+                // Special info (italic, no bullet)
+                const Text(
+                  'বিশেষ তথ্য: গ্রীষ্মকালে পর্যাপ্ত পানি পান ও হালকা খাবার খাওয়া অত্যন্ত জরুরি।',
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: Colors.deepOrange),
                 ),
               ],
             ),
@@ -200,6 +274,73 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Helper for Q&A answers
+  Widget _buildQAnswer(List<String> answers) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: answers.map((ans) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('• ', style: TextStyle(fontSize: 16)),
+            Expanded(child: Text(ans, style: const TextStyle(fontSize: 16))),
+          ],
+        ),
+      )).toList(),
+    );
+  }
+
+  // Helper for Q&A group (with কারণ, লক্ষণ, ছবি)
+  Widget _buildQGroup({
+    required String group,
+    required String karon,
+    required String lokkho,
+    required String chobi,
+    required List<String> tips,
+  }) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      color: Colors.grey[50],
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(group, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.teal)),
+            const SizedBox(height: 4),
+            Text('কারণ: $karon', style: const TextStyle(fontWeight: FontWeight.w500)),
+            Text('লক্ষণ: $lokkho', style: const TextStyle(fontWeight: FontWeight.w500)),
+            const SizedBox(height: 4),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('ছবি: ', style: TextStyle(fontWeight: FontWeight.w500)),
+                Flexible(
+                  child: Image.asset(
+                    chobi,
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
+                    errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            ...tips.map((tip) => Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('• ', style: TextStyle(fontSize: 15)),
+                Expanded(child: Text(tip, style: const TextStyle(fontSize: 15))),
+              ],
+            )),
+          ],
+        ),
       ),
     );
   }
