@@ -151,6 +151,59 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final LocalizationController localizationController = Get.find();
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldClose = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            title: Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 28),
+                const SizedBox(width: 10),
+                Expanded(child: Text(loc.appTitle, style: const TextStyle(fontWeight: FontWeight.bold))),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Do you really want to exit ${loc.appTitle}?',
+                  style: const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Divider(),
+              ],
+            ),
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancel', style: TextStyle(fontWeight: FontWeight.w500)),
+              ),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                icon: const Icon(Icons.exit_to_app, size: 18),
+                label: const Text('Exit'),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        );
+        return shouldClose ?? false;
+      },
+      child: _buildScaffold(context, loc, localizationController),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context, AppLocalizations loc, LocalizationController localizationController) {
     if (_loading) {
       return Scaffold(
         appBar: AppBar(title: Text(loc.dashboardTitle)),
