@@ -131,5 +131,6 @@
   "heatAlertWarningLevelsTitle": "Warning Levels",
   "heatAlertWarningLevelRed": "Red Alert: Severe heatwave, prolonged hot weather.",
   "heatAlertWarningLevelYellow": "Yellow Alert: Moderate temperature rise, some caution needed.",
-  "heatAlertWarningLevelGreen": "Green Alert: Normal heat, no special caution needed."
+  "heatAlertWarningLevelGreen": "Green Alert: Normal heat, no special caution needed.",
+  "weatherForecast": "Weather Forecast"
 }

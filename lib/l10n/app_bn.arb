@@ -131,5 +131,6 @@
   "heatAlertWarningLevelsTitle": "সতর্কতা স্তর",
   "heatAlertWarningLevelRed": "লাল সংকেত: তীব্র তাপপ্রবাহ, দীর্ঘস্থায়ী গরম আবহাওয়া।",
   "heatAlertWarningLevelYellow": "হলুদ সংকেত: মাঝারি তাপমাত্রা বৃদ্ধি, কিছু সতর্কতা প্রয়োজন।",
-  "heatAlertWarningLevelGreen": "সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।"
+  "heatAlertWarningLevelGreen": "সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।",
+  "weatherForecast": "আবহাওয়ার পূর্বাভাস"
 }

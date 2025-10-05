@@ -406,4 +406,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get heatAlertWarningLevelGreen => 'সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।';
+
+  @override
+  String get weatherForecast => 'আবহাওয়ার পূর্বাভাস';
 }

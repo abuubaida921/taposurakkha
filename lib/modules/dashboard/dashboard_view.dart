@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:taposurakkha/app/routes.dart';
 import 'package:taposurakkha/app/shared_preferences_helper.dart';
 import 'package:taposurakkha/app/toast_helper.dart';
 import '../../l10n/app_localizations.dart';
 import '../../app/localization_controller.dart';
+import 'weather_forecast_model.dart';
+import 'weather_forecast_service.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -18,16 +21,48 @@ class _DashboardViewState extends State<DashboardView> {
   double? _temperature;
   final TextEditingController _tempController = TextEditingController();
 
+  WeatherForecastResponse? _forecastResponse;
+  bool _forecastLoading = true;
+  String? _forecastError;
+
   @override
   void initState() {
     super.initState();
     _checkAuth();
+    _fetchForecast();
   }
 
   Future<void> _checkAuth() async {
     setState(() {
       _loading = false;
     });
+  }
+
+  Future<void> _fetchForecast() async {
+    setState(() {
+      _forecastLoading = true;
+      _forecastError = null;
+    });
+    try {
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      final res = await WeatherForecastService.fetchForecast(start: today);
+      if (res != null && res.status == 'ok') {
+        setState(() {
+          _forecastResponse = res;
+          _forecastLoading = false;
+        });
+      } else {
+        setState(() {
+          _forecastError = 'Failed to load forecast';
+          _forecastLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _forecastError = 'Error: $e';
+        _forecastLoading = false;
+      });
+    }
   }
 
   void _logout() async {
@@ -59,14 +94,6 @@ class _DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.appTitle),
-        // leading: Builder(
-        //   builder: (context) => IconButton(
-        //     icon: const Icon(Icons.menu),
-        //     onPressed: () {
-        //       Scaffold.of(context).openDrawer();
-        //     },
-        //   ),
-        // ),
         actions: [
           PopupMenuButton<Locale>(
             icon: const Icon(Icons.language),
@@ -84,62 +111,22 @@ class _DashboardViewState extends State<DashboardView> {
           ),
         ],
       ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     padding: EdgeInsets.zero,
-      //     children: [
-      //       DrawerHeader(
-      //         decoration: const BoxDecoration(
-      //           color: Colors.teal,
-      //         ),
-      //         child: Text(
-      //           loc.appTitle,
-      //           style: const TextStyle(color: Colors.white, fontSize: 24),
-      //         ),
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.home),
-      //         title: Text(loc.dashboardTitle),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Get.offNamed('/dashboard');
-      //         },
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.support_agent),
-      //         title: Text(loc.helpSupport ?? 'Help & Support'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Get.toNamed('/help_support');
-      //         },
-      //       ),
-      //       const Divider(),
-      //       ListTile(
-      //         leading: const Icon(Icons.description),
-      //         title: Text(loc.termsConditions ?? 'Terms & Conditions'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Get.toNamed('/terms_conditions');
-      //         },
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.info_outline),
-      //         title: Text(loc.about ?? 'About'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Get.toNamed('/about');
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 12),
+              // Weather Forecast Section
+              Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              if (_forecastLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (_forecastError != null)
+                Text(_forecastError!, style: const TextStyle(color: Colors.red))
+              else if (_forecastResponse != null)
+                _WeatherForecastList(forecast: _forecastResponse!.data.forecast),
+              const SizedBox(height: 24),
               GridView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -238,6 +225,38 @@ class _FeatureCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// Weather forecast list widget
+class _WeatherForecastList extends StatelessWidget {
+  final List<WeatherForecastDay> forecast;
+  const _WeatherForecastList({required this.forecast});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: forecast.length,
+      separatorBuilder: (_, __) => const Divider(height: 8),
+      itemBuilder: (context, i) {
+        final day = forecast[i];
+        return Card(
+          child: ListTile(
+            leading: Icon(Icons.calendar_today, color: Colors.teal),
+            title: Text(DateFormat('MMM d, yyyy').format(DateTime.parse(day.date))),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Avg Temp: ${day.avgTemp.forecast.toStringAsFixed(1)}°C (Min: ${day.minTemp.forecast.toStringAsFixed(1)}°C, Max: ${day.maxTemp.forecast.toStringAsFixed(1)}°C)'),
+                Text('Humidity: ${day.avgHumidity.forecast.toStringAsFixed(0)}%'),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

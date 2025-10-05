@@ -406,4 +406,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heatAlertWarningLevelGreen => 'Green Alert: Normal heat, no special caution needed.';
+
+  @override
+  String get weatherForecast => 'Weather Forecast';
 }

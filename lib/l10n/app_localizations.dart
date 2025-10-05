@@ -892,6 +892,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Green Alert: Normal heat, no special caution needed.'**
   String get heatAlertWarningLevelGreen;
+
+  /// No description provided for @weatherForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Forecast'**
+  String get weatherForecast;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
