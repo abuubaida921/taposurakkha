@@ -291,54 +291,106 @@ class _WeatherForecastList extends StatelessWidget {
     final dayOfWeek = DateFormat('EEEE').format(date);
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(_getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast), size: 36),
-                const SizedBox(width: 12),
-                Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                const SizedBox(width: 8),
-                Text(DateFormat('MMM d, yyyy').format(date), style: const TextStyle(fontSize: 16, color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _detailRow('Avg Temp', '${day.avgTemp.forecast.toStringAsFixed(1)}°C', '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)'),
-            _detailRow('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)'),
-            _detailRow('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)'),
-            _detailRow('Humidity', '${day.avgHumidity.forecast.toStringAsFixed(0)}%', '(${day.avgHumidity.lower}–${day.avgHumidity.upper}%)'),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text('Close'),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.45,
+        minChildSize: 0.35,
+        maxChildSize: 0.85,
+        expand: false,
+        builder: (context, scrollController) => Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x22000000),
+                blurRadius: 16,
+                offset: Offset(0, -2),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
+                child: ListView(
+                  controller: scrollController,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 5,
+                        margin: const EdgeInsets.only(bottom: 18),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(_getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast), size: 38, color: Colors.amber.shade700),
+                        const SizedBox(width: 14),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                            Text(DateFormat('MMM d, yyyy').format(date), style: const TextStyle(fontSize: 15, color: Colors.grey)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                    _detailRowPro('Avg Temp', '${day.avgTemp.forecast.toStringAsFixed(1)}°C', '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)', Icons.thermostat, Colors.orange),
+                    const Divider(height: 24),
+                    _detailRowPro('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)', Icons.arrow_upward, Colors.redAccent),
+                    const SizedBox(height: 8),
+                    _detailRowPro('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)', Icons.arrow_downward, Colors.blueAccent),
+                    const Divider(height: 24),
+                    _detailRowPro('Humidity', '${day.avgHumidity.forecast.toStringAsFixed(0)}%', '(${day.avgHumidity.lower}–${day.avgHumidity.upper}%)', Icons.water_drop, Colors.blue),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: IconButton(
+                  icon: const Icon(Icons.close_rounded, size: 28, color: Colors.grey),
+                  onPressed: () => Navigator.pop(ctx),
+                  tooltip: 'Close',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  static Widget _detailRow(String label, String value, String range) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          SizedBox(width: 100, child: Text(label, style: const TextStyle(fontWeight: FontWeight.w500))),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(width: 8),
-          Text(range, style: const TextStyle(color: Colors.grey)),
-        ],
-      ),
+  static Widget _detailRowPro(String label, String value, String range, IconData icon, Color iconColor) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: iconColor, size: 26),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              Row(
+                children: [
+                  Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  const SizedBox(width: 8),
+                  Text(range, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
