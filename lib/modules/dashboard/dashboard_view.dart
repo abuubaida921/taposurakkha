@@ -59,14 +59,14 @@ class _DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.appTitle),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
+        // leading: Builder(
+        //   builder: (context) => IconButton(
+        //     icon: const Icon(Icons.menu),
+        //     onPressed: () {
+        //       Scaffold.of(context).openDrawer();
+        //     },
+        //   ),
+        // ),
         actions: [
           PopupMenuButton<Locale>(
             icon: const Icon(Icons.language),
@@ -84,55 +84,55 @@ class _DashboardViewState extends State<DashboardView> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.teal,
-              ),
-              child: Text(
-                loc.appTitle,
-                style: const TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: Text(loc.dashboardTitle),
-              onTap: () {
-                Navigator.pop(context);
-                Get.offNamed('/dashboard');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.support_agent),
-              title: Text(loc.helpSupport ?? 'Help & Support'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/help_support');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.description),
-              title: Text(loc.termsConditions ?? 'Terms & Conditions'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/terms_conditions');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(loc.about ?? 'About'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/about');
-              },
-            ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: [
+      //       DrawerHeader(
+      //         decoration: const BoxDecoration(
+      //           color: Colors.teal,
+      //         ),
+      //         child: Text(
+      //           loc.appTitle,
+      //           style: const TextStyle(color: Colors.white, fontSize: 24),
+      //         ),
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.home),
+      //         title: Text(loc.dashboardTitle),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Get.offNamed('/dashboard');
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.support_agent),
+      //         title: Text(loc.helpSupport ?? 'Help & Support'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Get.toNamed('/help_support');
+      //         },
+      //       ),
+      //       const Divider(),
+      //       ListTile(
+      //         leading: const Icon(Icons.description),
+      //         title: Text(loc.termsConditions ?? 'Terms & Conditions'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Get.toNamed('/terms_conditions');
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.info_outline),
+      //         title: Text(loc.about ?? 'About'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Get.toNamed('/about');
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
