@@ -16,29 +16,39 @@ class OsmMappingView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Safe Shelters Card
+            // Q1 Card
             _buildInfoCard(
-              title: 'তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান কোথায়?', // Where Can You Find Safe Shelters?
+              title: 'Q1: তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান কোথায়?',
               icon: Icons.search,
               color: Colors.blue,
               children: const [
                 Text(
+                  'উত্তর:',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                SizedBox(height: 6),
+                Text(
                   'অফিস, হাসপাতাল, স্বাস্থ্য সহায়তা কেন্দ্র বা স্থানীয় সেবা প্রদানকারী স্থানগুলোর মানচিত্র দেখুন। আশেপাশে পানির উৎসের অবস্থানও জানা জরুরি।',
                   style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'মানচিত্র দেখুন।',
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: Colors.deepOrange),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            // Map Content Card
+            // Q2 Card
             _buildInfoCard(
-              title: 'স্থানীয় সেবা প্রদানকারীদের মানচিত্র', // Map of Local Service Providers
+              title: 'Q2: স্থানীয় সেবা প্রদানকারীদের মানচিত্র',
               icon: Icons.map_outlined,
               color: Colors.green,
               children: [
-                _buildBulletPoint('তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান এবং স্থানীয় সেবা প্রদানকারীদের মানচিত্র'),
-                _buildBulletPoint('আশেপাশের পানির উৎসের অবস্থান'),
-                _buildBulletPoint('হাসপাতাল, ক্লিনিক এবং স্বাস্থ্য সহায়তা কেন্দ্রের মানচিত্র'),
-                _buildBulletPoint('জরুরি অবস্থায় সহায়তার জন্য তাপপ্রবাহের সময় দ্রুত পেতে সহায়ক মানচিত্র'),
+                _buildBulletPoint('তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান এবং স্থানীয় সেবা প্রদানকারীদের মানচিত্র (Map of safe shelters and local service providers during a heatwave)'),
+                _buildBulletPoint('আশেপাশের পানির উৎসের অবস্থান (Location of nearby water sources)'),
+                _buildBulletPoint('হাসপাতাল, ক্লিনিক এবং স্বাস্থ্য সহায়তা কেন্দ্রের মানচিত্র (Map of hospitals, clinics, and health support centers)'),
+                _buildBulletPoint('জরুরি অবস্থায় সহায়তার জন্য তাপপ্রবাহের সময় দ্রুত পেতে সহায়ক মানচিত্র (Heatwave response map with quick access to emergency help)'),
               ],
             ),
           ],
