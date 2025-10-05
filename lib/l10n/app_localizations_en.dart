@@ -313,4 +313,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answerLabel => 'Answer: ';
+
+  @override
+  String get heatAlertTitle => 'Heat Alert';
+
+  @override
+  String get heatAlertImportanceTitle => 'Importance of Heatwave Forecast';
+
+  @override
+  String get heatAlertImportancePoint1 => 'Helps protect health and conserve water with early warning';
+
+  @override
+  String get heatAlertImportancePoint2 => 'Reduces damage in agriculture and industry';
+
+  @override
+  String get heatAlertImportancePoint3 => 'Facilitates emergency services and hospital preparedness';
+
+  @override
+  String get heatAlert7DayForecastTitle => '7-Day Forecast';
+
+  @override
+  String get heatAlertTemperatureChart => 'Temperature Chart';
+
+  @override
+  String get heatAlertLevelWarning => 'Warning';
+
+  @override
+  String get heatAlertLevelWarningRange => '35°C - 38°C';
+
+  @override
+  String get heatAlertLevelWarningDesc => 'Children, elderly, and sick people are advised not to go outside due to hot weather.';
+
+  @override
+  String get heatAlertLevelRisk => 'Risk';
+
+  @override
+  String get heatAlertLevelRiskRange => '39°C - 42°C';
+
+  @override
+  String get heatAlertLevelRiskDesc => 'Water crisis and heat-related problems will increase. Emphasis should be given to patient care and emergency medical preparedness.';
+
+  @override
+  String get heatAlertLevelAlert => 'Alert';
+
+  @override
+  String get heatAlertLevelAlertRange => '40°C or above';
+
+  @override
+  String get heatAlertLevelAlertDesc => 'Severe heatwave, agriculture and water resources may be affected. Everyone is advised to stay in safe shelters.';
+
+  @override
+  String get heatAlertWarningLevelsTitle => 'Warning Levels';
+
+  @override
+  String get heatAlertWarningLevelRed => 'Red Alert: Severe heatwave, prolonged hot weather.';
+
+  @override
+  String get heatAlertWarningLevelYellow => 'Yellow Alert: Moderate temperature rise, some caution needed.';
+
+  @override
+  String get heatAlertWarningLevelGreen => 'Green Alert: Normal heat, no special caution needed.';
 }

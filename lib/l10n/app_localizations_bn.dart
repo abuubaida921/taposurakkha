@@ -313,4 +313,64 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get answerLabel => 'উত্তর: ';
+
+  @override
+  String get heatAlertTitle => 'হিট এলার্ট';
+
+  @override
+  String get heatAlertImportanceTitle => 'তাপপ্রবাহের পূর্বাভাসের গুরুত্ব';
+
+  @override
+  String get heatAlertImportancePoint1 => 'আগাম সতর্কতা দিয়ে স্বাস্থ্য সুরক্ষা ও পানি সংরক্ষণে সহায়তা';
+
+  @override
+  String get heatAlertImportancePoint2 => 'কৃষি ও শিল্পক্ষেত্রে ক্ষতি কমানো';
+
+  @override
+  String get heatAlertImportancePoint3 => 'জরুরি সেবা ও হাসপাতালের প্রস্তুতি গ্রহণ সহজ করা';
+
+  @override
+  String get heatAlert7DayForecastTitle => 'আগামী ৭ দিনের পূর্বাভাস';
+
+  @override
+  String get heatAlertTemperatureChart => 'তাপমাত্রা সারণী';
+
+  @override
+  String get heatAlertLevelWarning => 'সতর্কতা';
+
+  @override
+  String get heatAlertLevelWarningRange => '৩৫°C - ৩৮°C';
+
+  @override
+  String get heatAlertLevelWarningDesc => 'গরম আবহাওয়ার কারণে শিশু, বৃদ্ধ এবং অসুস্থ মানুষদের বাইরে বের না হওয়ার পরামর্শ দেওয়া হবে।';
+
+  @override
+  String get heatAlertLevelRisk => 'ঝুঁকি';
+
+  @override
+  String get heatAlertLevelRiskRange => '৩৯°C - ৪২°C';
+
+  @override
+  String get heatAlertLevelRiskDesc => 'পানির সংকট এবং তাপজনিত সমস্যাগুলি বৃদ্ধি পাবে। রোগী সেবা ও জরুরি চিকিৎসা প্রস্তুতির উপর গুরুত্ব দিতে হবে।';
+
+  @override
+  String get heatAlertLevelAlert => 'হুঁশিয়ারি';
+
+  @override
+  String get heatAlertLevelAlertRange => '৪০°C বা তার বেশি';
+
+  @override
+  String get heatAlertLevelAlertDesc => 'তীব্র তাপপ্রবাহ, কৃষি ও জলসম্পদ ক্ষতিগ্রস্ত হতে পারে। সবার জন্য নিরাপদ আশ্রয়স্থলে থাকার পরামর্শ থাকবে।';
+
+  @override
+  String get heatAlertWarningLevelsTitle => 'সতর্কতা স্তর';
+
+  @override
+  String get heatAlertWarningLevelRed => 'লাল সংকেত: তীব্র তাপপ্রবাহ, দীর্ঘস্থায়ী গরম আবহাওয়া।';
+
+  @override
+  String get heatAlertWarningLevelYellow => 'হলুদ সংকেত: মাঝারি তাপমাত্রা বৃদ্ধি, কিছু সতর্কতা প্রয়োজন।';
+
+  @override
+  String get heatAlertWarningLevelGreen => 'সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।';
 }

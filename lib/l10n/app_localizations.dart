@@ -706,6 +706,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answer: '**
   String get answerLabel;
+
+  /// No description provided for @heatAlertTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat Alert'**
+  String get heatAlertTitle;
+
+  /// No description provided for @heatAlertImportanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Importance of Heatwave Forecast'**
+  String get heatAlertImportanceTitle;
+
+  /// No description provided for @heatAlertImportancePoint1.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps protect health and conserve water with early warning'**
+  String get heatAlertImportancePoint1;
+
+  /// No description provided for @heatAlertImportancePoint2.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduces damage in agriculture and industry'**
+  String get heatAlertImportancePoint2;
+
+  /// No description provided for @heatAlertImportancePoint3.
+  ///
+  /// In en, this message translates to:
+  /// **'Facilitates emergency services and hospital preparedness'**
+  String get heatAlertImportancePoint3;
+
+  /// No description provided for @heatAlert7DayForecastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'7-Day Forecast'**
+  String get heatAlert7DayForecastTitle;
+
+  /// No description provided for @heatAlertTemperatureChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature Chart'**
+  String get heatAlertTemperatureChart;
+
+  /// No description provided for @heatAlertLevelWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get heatAlertLevelWarning;
+
+  /// No description provided for @heatAlertLevelWarningRange.
+  ///
+  /// In en, this message translates to:
+  /// **'35°C - 38°C'**
+  String get heatAlertLevelWarningRange;
+
+  /// No description provided for @heatAlertLevelWarningDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Children, elderly, and sick people are advised not to go outside due to hot weather.'**
+  String get heatAlertLevelWarningDesc;
+
+  /// No description provided for @heatAlertLevelRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk'**
+  String get heatAlertLevelRisk;
+
+  /// No description provided for @heatAlertLevelRiskRange.
+  ///
+  /// In en, this message translates to:
+  /// **'39°C - 42°C'**
+  String get heatAlertLevelRiskRange;
+
+  /// No description provided for @heatAlertLevelRiskDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Water crisis and heat-related problems will increase. Emphasis should be given to patient care and emergency medical preparedness.'**
+  String get heatAlertLevelRiskDesc;
+
+  /// No description provided for @heatAlertLevelAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert'**
+  String get heatAlertLevelAlert;
+
+  /// No description provided for @heatAlertLevelAlertRange.
+  ///
+  /// In en, this message translates to:
+  /// **'40°C or above'**
+  String get heatAlertLevelAlertRange;
+
+  /// No description provided for @heatAlertLevelAlertDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe heatwave, agriculture and water resources may be affected. Everyone is advised to stay in safe shelters.'**
+  String get heatAlertLevelAlertDesc;
+
+  /// No description provided for @heatAlertWarningLevelsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning Levels'**
+  String get heatAlertWarningLevelsTitle;
+
+  /// No description provided for @heatAlertWarningLevelRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Alert: Severe heatwave, prolonged hot weather.'**
+  String get heatAlertWarningLevelRed;
+
+  /// No description provided for @heatAlertWarningLevelYellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow Alert: Moderate temperature rise, some caution needed.'**
+  String get heatAlertWarningLevelYellow;
+
+  /// No description provided for @heatAlertWarningLevelGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green Alert: Normal heat, no special caution needed.'**
+  String get heatAlertWarningLevelGreen;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
