@@ -11,6 +11,11 @@ class WeatherForecastResponse {
       data: WeatherForecastData.fromJson(json['data']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'status': status,
+    'data': data.toJson(),
+  };
 }
 
 class WeatherForecastData {
@@ -27,6 +32,11 @@ class WeatherForecastData {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'meta': meta.toJson(),
+    'forecast': forecast.map((e) => e.toJson()).toList(),
+  };
 }
 
 class WeatherForecastMeta {
@@ -74,6 +84,21 @@ class WeatherForecastMeta {
       minTempBiasMode: json['min_temp_bias_mode'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'method': method,
+    'horizon': horizon,
+    'start': start,
+    'csv_first': csvFirst,
+    'csv_last': csvLast,
+    'targets': targets,
+    'bias_window': biasWindow,
+    'bias_damp': biasDamp,
+    'avg_humidity_bias_mode': avgHumidityBiasMode,
+    'avg_temp_bias_mode': avgTempBiasMode,
+    'max_temp_bias_mode': maxTempBiasMode,
+    'min_temp_bias_mode': minTempBiasMode,
+  };
 }
 
 class WeatherForecastDay {
@@ -100,6 +125,14 @@ class WeatherForecastDay {
       minTemp: WeatherForecastValue.fromJson(json['min_temp']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'date': date,
+    'avg_humidity': avgHumidity.toJson(),
+    'avg_temp': avgTemp.toJson(),
+    'max_temp': maxTemp.toJson(),
+    'min_temp': minTemp.toJson(),
+  };
 }
 
 class WeatherForecastValue {
@@ -116,5 +149,10 @@ class WeatherForecastValue {
       upper: (json['upper'] as num).toDouble(),
     );
   }
-}
 
+  Map<String, dynamic> toJson() => {
+    'forecast': forecast,
+    'lower': lower,
+    'upper': upper,
+  };
+}

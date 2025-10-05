@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:taposurakkha/app/routes.dart';
 import 'package:taposurakkha/app/shared_preferences_helper.dart';
 import 'package:taposurakkha/app/toast_helper.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app/beautiful_loader.dart';
 import '../../l10n/app_localizations.dart';
 import '../../app/localization_controller.dart';
@@ -27,10 +28,13 @@ class _DashboardViewState extends State<DashboardView> {
   bool _forecastLoading = true;
   String? _forecastError;
 
+  static const String _weatherCacheKey = 'weather_forecast_cache';
+
   @override
   void initState() {
     super.initState();
     _checkAuth();
+    _loadCachedForecast();
     _fetchForecast();
   }
 
@@ -40,9 +44,30 @@ class _DashboardViewState extends State<DashboardView> {
     });
   }
 
+  Future<void> _loadCachedForecast() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cached = prefs.getString(_weatherCacheKey);
+    if (cached != null) {
+      try {
+        final jsonData = json.decode(cached);
+        final cachedResponse = WeatherForecastResponse.fromJson(jsonData);
+        setState(() {
+          _forecastResponse = cachedResponse;
+          _forecastLoading = false;
+        });
+      } catch (_) {}
+    }
+  }
+
+  Future<void> _cacheForecast(WeatherForecastResponse response) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = json.encode(response.toJson());
+    await prefs.setString(_weatherCacheKey, jsonString);
+  }
+
   Future<void> _fetchForecast() async {
     setState(() {
-      _forecastLoading = true;
+      _forecastLoading = _forecastResponse == null; // Only show loader if no cache
       _forecastError = null;
     });
     try {
@@ -53,6 +78,7 @@ class _DashboardViewState extends State<DashboardView> {
           _forecastResponse = res;
           _forecastLoading = false;
         });
+        _cacheForecast(res);
       } else {
         setState(() {
           _forecastError = 'Failed to load forecast';
