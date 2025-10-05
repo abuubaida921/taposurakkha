@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/beautiful_loader.dart';
 import '../../app/shared_preferences_helper.dart';
 import 'auth_controller.dart';
 
@@ -101,7 +102,7 @@ class LoginView extends GetView<AuthController> {
                 child: Obx(() => ElevatedButton(
                   onPressed: _isLoading.value ? null : _login,
                   child: _isLoading.value
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? const Center(child: BeautifulLoader())
                       : const Text('Login'),
                 )),
               ),

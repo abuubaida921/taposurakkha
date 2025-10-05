@@ -2,6 +2,8 @@ import 'package:taposurakkha/app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../app/beautiful_loader.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
               SizedBox(height: 24),
             Text('তাপসুরক্ষা', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
-            CircularProgressIndicator(),
+            BeautifulLoader()
             ],
           ),
         ),

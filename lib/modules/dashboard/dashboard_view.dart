@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:taposurakkha/app/routes.dart';
 import 'package:taposurakkha/app/shared_preferences_helper.dart';
 import 'package:taposurakkha/app/toast_helper.dart';
+import '../../app/beautiful_loader.dart';
 import '../../l10n/app_localizations.dart';
 import '../../app/localization_controller.dart';
 import 'weather_forecast_model.dart';
@@ -88,7 +90,7 @@ class _DashboardViewState extends State<DashboardView> {
     if (_loading) {
       return Scaffold(
         appBar: AppBar(title: Text(loc.dashboardTitle)),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const Center(child: BeautifulLoader()),
       );
     }
     return Scaffold(
@@ -121,7 +123,7 @@ class _DashboardViewState extends State<DashboardView> {
               Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               if (_forecastLoading)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: BeautifulLoader())
               else if (_forecastError != null)
                 Text(_forecastError!, style: const TextStyle(color: Colors.red))
               else if (_forecastResponse != null)
