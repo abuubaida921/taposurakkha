@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:taposurakkha/app/routes.dart';
@@ -29,6 +30,7 @@ class _DashboardViewState extends State<DashboardView> {
   String? _forecastError;
 
   static const String _weatherCacheKey = 'weather_forecast_cache';
+  final apiKey = dotenv.env['API_KEY'];
 
   @override
   void initState() {
@@ -145,6 +147,7 @@ class _DashboardViewState extends State<DashboardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(apiKey!),
               // Weather Forecast Section
               Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
