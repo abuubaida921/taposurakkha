@@ -180,12 +180,16 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
               children: [
                 Icon(icon, color: color, size: 28),
                 const SizedBox(width: 12),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: color,
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
                   ),
                 ),
               ],
