@@ -213,5 +213,101 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heatAlert => 'Heat Alert';
 
   @override
+  String get causeLabel => 'Cause: ';
+
+  @override
+  String get symptomLabel => 'Symptom: ';
+
+  @override
   String get emergencyHelpline => 'Emergency Helpline';
+
+  @override
+  String get heatwaveInfoTitle => 'Understanding Heatwaves';
+
+  @override
+  String get whatIsHeatwaveQ => 'What is a Heatwave?';
+
+  @override
+  String get whatIsHeatwaveA => 'A heatwave is a period when the temperature becomes significantly higher than normal and lasts for at least 3 days. Usually, the temperature is 36°C or higher.';
+
+  @override
+  String get typesOfHeatwaveQ => 'Types of Heatwaves in Bangladesh';
+
+  @override
+  String get mildHeatwave => 'Mild: 36°C–38°C';
+
+  @override
+  String get moderateHeatwave => 'Moderate: 38°C–40°C';
+
+  @override
+  String get severeHeatwave => 'Severe: 40°C or above';
+
+  @override
+  String get causesOfHeatwaveQ => 'What are the Causes of Heatwaves?';
+
+  @override
+  String get causeHighPressure => 'High-pressure atmospheric conditions causing hot air to accumulate';
+
+  @override
+  String get causeDryWind => 'Dry seasonal wind flow';
+
+  @override
+  String get causeUrbanHeatIsland => 'Urban Heat Island Effect';
+
+  @override
+  String get causeClimateChange => 'Rising temperatures due to climate change';
+
+  @override
+  String get preMonsoonSpecial => 'Pre-monsoon: Sunlight is very intense, soil moisture is low, and hot dry weather creates heatwaves.';
+
+  @override
+  String get preMonsoonLabel => 'Pre-monsoon:';
+
+  @override
+  String get healthSymptomsQ => 'What are the Symptoms of Heat-Related Health Issues?';
+
+  @override
+  String get heatExhaustion => 'Heat Exhaustion';
+
+  @override
+  String get heatExhaustionCause => 'Prolonged exposure to heat and not drinking enough water';
+
+  @override
+  String get heatExhaustionSymptom => 'Weakness, dizziness, nausea, cold clammy skin, rapid and weak pulse';
+
+  @override
+  String get heatStroke => 'Heat Stroke';
+
+  @override
+  String get heatStrokeCause => 'Rapid rise in body temperature and lack of sweating';
+
+  @override
+  String get heatStrokeSymptom => 'Hot and dry skin, unconsciousness, rapid heartbeat, high temperature (40°C or above)';
+
+  @override
+  String get heatCramp => 'Heat Cramp';
+
+  @override
+  String get heatCrampCause => 'Excessive sweating and salt-water deficiency';
+
+  @override
+  String get heatCrampSymptom => 'Sudden muscle pain or spasm, sweating';
+
+  @override
+  String get dehydration => 'Dehydration';
+
+  @override
+  String get dehydrationCause => 'Excessive loss of water from the body';
+
+  @override
+  String get dehydrationSymptom => 'Thirst, dry mouth, less urination, weakness, sunken and dry eyes';
+
+  @override
+  String get skinProblem => 'Skin Problem';
+
+  @override
+  String get skinProblemCause => 'Sweat accumulation causing skin issues';
+
+  @override
+  String get skinProblemSymptom => 'Red rash or blisters, burning or itching skin';
 }

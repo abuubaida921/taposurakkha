@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../l10n/app_localizations.dart';
 
 import 'model/heat_health_issue.dart';
 
@@ -7,11 +9,12 @@ class HeatwaveInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'তাপপ্রবাহের ধারনা', // Understanding Heatwaves
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          loc.heatwaveInfoTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -21,9 +24,9 @@ class HeatwaveInfoView extends StatelessWidget {
           children: [
             // Q1: What is a Heatwave?
             _buildInfoCard(
-              title: 'তাপপ্রবাহ কী?',
+              title: loc.whatIsHeatwaveQ,
               // What is a Heatwave?
-              answer: 'তাপপ্রবাহ হলো একটি সময়কাল, যখন তাপমাত্রা স্বাভাবিকের চেয়ে উল্লেখযোগ্যভাবে বেশি হয়ে যায় এবং এটি কমপক্ষে ৩ দিন ধরে স্থায়ী হয়। সাধারণত, তাপমাত্রা ৩৬°C বা তার বেশি হয়ে থাকে।',
+              answer: loc.whatIsHeatwaveA,
               // A heatwave is a period when the temperature becomes significantly higher than normal and lasts for at least 3 days. Usually, the temperature is 36°C or higher.
               icon: Icons.thermostat_outlined,
               color: Colors.blue,
@@ -31,46 +34,44 @@ class HeatwaveInfoView extends StatelessWidget {
             const SizedBox(height: 16),
             // Q2: Types of Heatwaves in Bangladesh
             _buildInfoCard(
-              title: 'বাংলাদেশে তাপপ্রবাহের প্রকারভেদ',
+              title: loc.typesOfHeatwaveQ,
               // Types of Heatwaves in Bangladesh
               icon: Icons.stacked_bar_chart,
               color: Colors.green,
               children: [
-                _buildBulletPoint('মৃদু: ৩৬°C–৩৮°C'),
-                _buildBulletPoint('মাঝারি: ৩৮°C–৪০°C'),
-                _buildBulletPoint('তীব্র: ৪০°C বা তার বেশি'),
+                _buildBulletPoint(loc.mildHeatwave),
+                _buildBulletPoint(loc.moderateHeatwave),
+                _buildBulletPoint(loc.severeHeatwave),
               ],
             ),
             const SizedBox(height: 16),
             // Q3: Causes of Heatwaves
             _buildInfoCard(
-              title: 'তাপপ্রবাহের কারণ কী?',
+              title: loc.causesOfHeatwaveQ,
               // What are the Causes of Heatwaves?
               icon: Icons.whatshot_outlined,
               color: Colors.orange,
               children: [
-                _buildBulletPoint(
-                    'উচ্চচাপ বায়ুমণ্ডলীয় অবস্থা, ফলে গরম বাতাস জমে থাকা'),
-                _buildBulletPoint('শুষ্ক মৌসুমি বায়ু প্রবাহ'),
-                _buildBulletPoint(
-                    'নগর এলাকায় তাপদ্বীপ প্রভাব (Urban Heat Island Effect)'),
-                _buildBulletPoint('জলবায়ু পরিবর্তনের কারণে তাপমাত্রা বৃদ্ধি'),
+                _buildBulletPoint(loc.causeHighPressure),
+                _buildBulletPoint(loc.causeDryWind),
+                _buildBulletPoint(loc.causeUrbanHeatIsland),
+                _buildBulletPoint(loc.causeClimateChange),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
+                    text: TextSpan(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontStyle: FontStyle.italic,
                         color: Colors.deepOrange,
                       ),
                       children: [
                         TextSpan(
-                          text: 'বর্ষার আগে গরমের সময় : ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          text: loc.preMonsoonLabel + ' ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: 'সূর্যের আলো খুব তীব্র হয়, মাটিতে আর্দ্রতা কম থাকে, আর গরম বাতাস ও শুকনো আবহাওয়া মিলে হিটওয়েভ তৈরি করে।',
+                          text: loc.preMonsoonSpecial,
                         ),
                       ],
                     ),
@@ -95,7 +96,7 @@ class HeatwaveInfoView extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'তাপপ্রবাহের সময় স্বাস্থ্যগত সংকটের লক্ষণ কী কী?',
+                            loc.healthSymptomsQ,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -106,8 +107,7 @@ class HeatwaveInfoView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    ...heatHealthIssues.map((issue) =>
-                        _buildHealthIssueCard(issue)).toList(),
+                    ..._localizedHeatHealthIssues(loc).map((issue) => _buildHealthIssueCard(issue)).toList(),
                   ],
                 ),
               ),
@@ -116,6 +116,41 @@ class HeatwaveInfoView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<HeatHealthIssue> _localizedHeatHealthIssues(AppLocalizations loc) {
+    return [
+      HeatHealthIssue(
+        name: loc.heatExhaustion,
+        cause: loc.heatExhaustionCause,
+        symptom: loc.heatExhaustionSymptom,
+        imageAsset: 'assets/images/heat_exhaustion.png',
+      ),
+      HeatHealthIssue(
+        name: loc.heatStroke,
+        cause: loc.heatStrokeCause,
+        symptom: loc.heatStrokeSymptom,
+        imageAsset: 'assets/images/heat_stroke.png',
+      ),
+      HeatHealthIssue(
+        name: loc.heatCramp,
+        cause: loc.heatCrampCause,
+        symptom: loc.heatCrampSymptom,
+        imageAsset: 'assets/images/heat_cramp.png',
+      ),
+      HeatHealthIssue(
+        name: loc.dehydration,
+        cause: loc.dehydrationCause,
+        symptom: loc.dehydrationSymptom,
+        imageAsset: 'assets/images/dehydration.png',
+      ),
+      HeatHealthIssue(
+        name: loc.skinProblem,
+        cause: loc.skinProblemCause,
+        symptom: loc.skinProblemSymptom,
+        imageAsset: 'assets/images/skin_problem.png',
+      ),
+    ];
   }
 
   // Helper method to build a card with a question and answer/list
@@ -213,6 +248,7 @@ class HeatwaveInfoView extends StatelessWidget {
 
   // Helper method to build a health issue card
   Widget _buildHealthIssueCard(HeatHealthIssue issue) {
+    final loc = AppLocalizations.of(Get.context!)!;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       color: Colors.red[50],
@@ -253,7 +289,7 @@ class HeatwaveInfoView extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('কারণ: ',
+                       Text(loc.causeLabel,
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       Expanded(child: Text(issue.cause)),
                     ],
@@ -262,7 +298,7 @@ class HeatwaveInfoView extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('লক্ষণ: ',
+                       Text(loc.symptomLabel,
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       Expanded(child: Text(issue.symptom)),
                     ],

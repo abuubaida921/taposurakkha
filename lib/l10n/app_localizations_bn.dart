@@ -213,5 +213,101 @@ class AppLocalizationsBn extends AppLocalizations {
   String get heatAlert => 'হিট এলার্ট';
 
   @override
+  String get causeLabel => 'কারণ: ';
+
+  @override
+  String get symptomLabel => 'লক্ষণ: ';
+
+  @override
   String get emergencyHelpline => 'জরুরি হেল্পলাইন';
+
+  @override
+  String get heatwaveInfoTitle => 'তাপপ্রবাহের ধারনা';
+
+  @override
+  String get whatIsHeatwaveQ => 'তাপপ্রবাহ কী?';
+
+  @override
+  String get whatIsHeatwaveA => 'তাপপ্রবাহ হলো একটি সময়কাল, যখন তাপমাত্রা স্বাভাবিকের চেয়ে উল্লেখযোগ্যভাবে বেশি হয়ে যায় এবং এটি কমপক্ষে ৩ দিন ধরে স্থায়ী হয়। সাধারণত, তাপমাত্রা ৩৬°C বা তার বেশি হয়ে থাকে।';
+
+  @override
+  String get typesOfHeatwaveQ => 'বাংলাদেশে তাপপ্রবাহের প্রকারভেদ';
+
+  @override
+  String get mildHeatwave => 'মৃদু: ৩৬°C–৩৮°C';
+
+  @override
+  String get moderateHeatwave => 'মাঝারি: ৩৮°C–৪০°C';
+
+  @override
+  String get severeHeatwave => 'তীব্র: ৪০°C বা তার বেশি';
+
+  @override
+  String get causesOfHeatwaveQ => 'তাপপ্রবাহের কারণ কী?';
+
+  @override
+  String get causeHighPressure => 'উচ্চচাপ বায়ুমণ্ডলীয় অবস্থা, ফলে গরম বাতাস জমে থাকা';
+
+  @override
+  String get causeDryWind => 'শুষ্ক মৌসুমি বায়ু প্রবাহ';
+
+  @override
+  String get causeUrbanHeatIsland => 'নগর এলাকায় তাপদ্বীপ প্রভাব (Urban Heat Island Effect)';
+
+  @override
+  String get causeClimateChange => 'জলবায়ু পরিবর্তনের কারণে তাপমাত্রা বৃদ্ধি';
+
+  @override
+  String get preMonsoonSpecial => 'বর্ষার আগে গরমের সময় : সূর্যের আলো খুব তীব্র হয়, মাটিতে আর্দ্রতা কম থাকে, আর গরম বাতাস ও শুকনো আবহাওয়া মিলে হিটওয়েভ তৈরি করে।';
+
+  @override
+  String get preMonsoonLabel => 'বর্ষার আগে গরমের সময় :';
+
+  @override
+  String get healthSymptomsQ => 'তাপপ্রবাহের সময় স্বাস্থ্যগত সংকটের লক্ষণ কী কী?';
+
+  @override
+  String get heatExhaustion => 'হিট এক্সহস্টশন';
+
+  @override
+  String get heatExhaustionCause => 'দীর্ঘ সময় গরমে থাকা ও পর্যাপ্ত পানি না খাওয়া';
+
+  @override
+  String get heatExhaustionSymptom => 'দুর্বলতা, মাথা ঘোরা, বমি বমি ভাব, ঠাণ্ডা, পিলপিলে ত্বক, দ্রুত ও দুর্বল পালস';
+
+  @override
+  String get heatStroke => 'হিট স্ট্রোক';
+
+  @override
+  String get heatStrokeCause => 'শরীরের তাপমাত্রা দ্রুত বেড়ে যাওয়া ও ঘাম না হওয়া';
+
+  @override
+  String get heatStrokeSymptom => 'ত্বক গরম ও শুষ্ক হওয়া, জ্ঞান হারানো, দ্রুত হার্টবিট, উচ্চ তাপমাত্রা (৪০°C বা বেশি)';
+
+  @override
+  String get heatCramp => 'হিট ক্র্যাম্প';
+
+  @override
+  String get heatCrampCause => 'গরমে অতিরিক্ত ঘাম ও লবণ-পানি ঘাটতি';
+
+  @override
+  String get heatCrampSymptom => 'পেশীতে আকস্মিক ব্যথা বা সংকোচন, ঘাম হওয়া';
+
+  @override
+  String get dehydration => 'ডিহাইড্রেশন';
+
+  @override
+  String get dehydrationCause => 'শরীর থেকে অতিরিক্ত পানি বের হয়ে যাওয়া';
+
+  @override
+  String get dehydrationSymptom => 'তৃষ্ণা, শুকনো মুখ, কম প্রস্রাব, দুর্বলতা, চোখ শুকনো ও ডুবে যাওয়া';
+
+  @override
+  String get skinProblem => 'ত্বকের সমস্যা';
+
+  @override
+  String get skinProblemCause => 'গরমে ঘাম জমে ত্বকে সমস্যা সৃষ্টি';
+
+  @override
+  String get skinProblemSymptom => 'লালচে দাগ বা ফুসকুড়ি, ত্বকে জ্বালা বা চুলকানি';
 }

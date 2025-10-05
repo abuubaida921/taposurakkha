@@ -503,11 +503,203 @@ abstract class AppLocalizations {
   /// **'Heat Alert'**
   String get heatAlert;
 
+  /// No description provided for @causeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cause: '**
+  String get causeLabel;
+
+  /// No description provided for @symptomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptom: '**
+  String get symptomLabel;
+
   /// No description provided for @emergencyHelpline.
   ///
   /// In en, this message translates to:
   /// **'Emergency Helpline'**
   String get emergencyHelpline;
+
+  /// No description provided for @heatwaveInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Understanding Heatwaves'**
+  String get heatwaveInfoTitle;
+
+  /// No description provided for @whatIsHeatwaveQ.
+  ///
+  /// In en, this message translates to:
+  /// **'What is a Heatwave?'**
+  String get whatIsHeatwaveQ;
+
+  /// No description provided for @whatIsHeatwaveA.
+  ///
+  /// In en, this message translates to:
+  /// **'A heatwave is a period when the temperature becomes significantly higher than normal and lasts for at least 3 days. Usually, the temperature is 36°C or higher.'**
+  String get whatIsHeatwaveA;
+
+  /// No description provided for @typesOfHeatwaveQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Types of Heatwaves in Bangladesh'**
+  String get typesOfHeatwaveQ;
+
+  /// No description provided for @mildHeatwave.
+  ///
+  /// In en, this message translates to:
+  /// **'Mild: 36°C–38°C'**
+  String get mildHeatwave;
+
+  /// No description provided for @moderateHeatwave.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate: 38°C–40°C'**
+  String get moderateHeatwave;
+
+  /// No description provided for @severeHeatwave.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe: 40°C or above'**
+  String get severeHeatwave;
+
+  /// No description provided for @causesOfHeatwaveQ.
+  ///
+  /// In en, this message translates to:
+  /// **'What are the Causes of Heatwaves?'**
+  String get causesOfHeatwaveQ;
+
+  /// No description provided for @causeHighPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'High-pressure atmospheric conditions causing hot air to accumulate'**
+  String get causeHighPressure;
+
+  /// No description provided for @causeDryWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Dry seasonal wind flow'**
+  String get causeDryWind;
+
+  /// No description provided for @causeUrbanHeatIsland.
+  ///
+  /// In en, this message translates to:
+  /// **'Urban Heat Island Effect'**
+  String get causeUrbanHeatIsland;
+
+  /// No description provided for @causeClimateChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Rising temperatures due to climate change'**
+  String get causeClimateChange;
+
+  /// No description provided for @preMonsoonSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-monsoon: Sunlight is very intense, soil moisture is low, and hot dry weather creates heatwaves.'**
+  String get preMonsoonSpecial;
+
+  /// No description provided for @preMonsoonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-monsoon:'**
+  String get preMonsoonLabel;
+
+  /// No description provided for @healthSymptomsQ.
+  ///
+  /// In en, this message translates to:
+  /// **'What are the Symptoms of Heat-Related Health Issues?'**
+  String get healthSymptomsQ;
+
+  /// No description provided for @heatExhaustion.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat Exhaustion'**
+  String get heatExhaustion;
+
+  /// No description provided for @heatExhaustionCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Prolonged exposure to heat and not drinking enough water'**
+  String get heatExhaustionCause;
+
+  /// No description provided for @heatExhaustionSymptom.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakness, dizziness, nausea, cold clammy skin, rapid and weak pulse'**
+  String get heatExhaustionSymptom;
+
+  /// No description provided for @heatStroke.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat Stroke'**
+  String get heatStroke;
+
+  /// No description provided for @heatStrokeCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Rapid rise in body temperature and lack of sweating'**
+  String get heatStrokeCause;
+
+  /// No description provided for @heatStrokeSymptom.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot and dry skin, unconsciousness, rapid heartbeat, high temperature (40°C or above)'**
+  String get heatStrokeSymptom;
+
+  /// No description provided for @heatCramp.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat Cramp'**
+  String get heatCramp;
+
+  /// No description provided for @heatCrampCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Excessive sweating and salt-water deficiency'**
+  String get heatCrampCause;
+
+  /// No description provided for @heatCrampSymptom.
+  ///
+  /// In en, this message translates to:
+  /// **'Sudden muscle pain or spasm, sweating'**
+  String get heatCrampSymptom;
+
+  /// No description provided for @dehydration.
+  ///
+  /// In en, this message translates to:
+  /// **'Dehydration'**
+  String get dehydration;
+
+  /// No description provided for @dehydrationCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Excessive loss of water from the body'**
+  String get dehydrationCause;
+
+  /// No description provided for @dehydrationSymptom.
+  ///
+  /// In en, this message translates to:
+  /// **'Thirst, dry mouth, less urination, weakness, sunken and dry eyes'**
+  String get dehydrationSymptom;
+
+  /// No description provided for @skinProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Skin Problem'**
+  String get skinProblem;
+
+  /// No description provided for @skinProblemCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Sweat accumulation causing skin issues'**
+  String get skinProblemCause;
+
+  /// No description provided for @skinProblemSymptom.
+  ///
+  /// In en, this message translates to:
+  /// **'Red rash or blisters, burning or itching skin'**
+  String get skinProblemSymptom;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
