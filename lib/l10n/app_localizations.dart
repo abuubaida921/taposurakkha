@@ -472,6 +472,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Consume adequate protein and minerals'**
   String get consumeAdequateProteinAndMinerals;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// No description provided for @termsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsConditions;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @heatwaveInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Heatwave Info'**
+  String get heatwaveInfo;
+
+  /// No description provided for @heatAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat Alert'**
+  String get heatAlert;
+
+  /// No description provided for @emergencyHelpline.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Helpline'**
+  String get emergencyHelpline;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

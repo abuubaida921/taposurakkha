@@ -196,4 +196,22 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get consumeAdequateProteinAndMinerals => 'পর্যাপ্ত প্রোটিন ও মিনারেল যুক্ত খাবার খান';
+
+  @override
+  String get helpSupport => 'সহায়তা ও সহায়ক';
+
+  @override
+  String get termsConditions => 'শর্তাবলী';
+
+  @override
+  String get about => 'পরিচিতি';
+
+  @override
+  String get heatwaveInfo => 'তাপপ্রবাহের ধারনা';
+
+  @override
+  String get heatAlert => 'হিট এলার্ট';
+
+  @override
+  String get emergencyHelpline => 'জরুরি হেল্পলাইন';
 }

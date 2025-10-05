@@ -196,4 +196,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consumeAdequateProteinAndMinerals => 'Consume adequate protein and minerals';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get termsConditions => 'Terms & Conditions';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get heatwaveInfo => 'Heatwave Info';
+
+  @override
+  String get heatAlert => 'Heat Alert';
+
+  @override
+  String get emergencyHelpline => 'Emergency Helpline';
 }

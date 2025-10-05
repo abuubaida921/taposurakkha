@@ -61,5 +61,11 @@
   "eatLiquidAndEasilyDigestibleFoods": "Eat liquid and easily digestible foods",
   "avoidFriedAndHeavyFoods": "Avoid fried and heavy foods",
   "eatMoreFruitsAndVegetables": "Eat more fruits and vegetables",
-  "consumeAdequateProteinAndMinerals": "Consume adequate protein and minerals"
+  "consumeAdequateProteinAndMinerals": "Consume adequate protein and minerals",
+  "helpSupport": "Help & Support",
+  "termsConditions": "Terms & Conditions",
+  "about": "About",
+  "heatwaveInfo": "Heatwave Info",
+  "heatAlert": "Heat Alert",
+  "emergencyHelpline": "Emergency Helpline"
 }
