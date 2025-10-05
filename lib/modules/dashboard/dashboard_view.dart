@@ -246,76 +246,137 @@ class _WeatherForecastList extends StatelessWidget {
     }
   }
 
-  Color _getTempColor(double temp) {
+  LinearGradient _getCardGradient(double temp) {
     if (temp >= 35) {
-      return Colors.redAccent;
+      return const LinearGradient(colors: [Color(0xFFFFA726), Color(0xFFFF7043)]); // orange-red
     } else if (temp >= 30) {
-      return Colors.orangeAccent;
+      return const LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFFB300)]); // yellow-orange
     } else if (temp >= 25) {
-      return Colors.blueAccent;
+      return const LinearGradient(colors: [Color(0xFF64B5F6), Color(0xFF1976D2)]); // blue
     } else {
-      return Colors.lightBlue;
+      return const LinearGradient(colors: [Color(0xFFB3E5FC), Color(0xFF0288D1)]); // light blue
     }
+  }
+
+  void _showDetails(BuildContext context, WeatherForecastDay day) {
+    final date = DateTime.parse(day.date);
+    final dayOfWeek = DateFormat('EEEE').format(date);
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(_getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast), size: 36),
+                const SizedBox(width: 12),
+                Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                const SizedBox(width: 8),
+                Text(DateFormat('MMM d, yyyy').format(date), style: const TextStyle(fontSize: 16, color: Colors.grey)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _detailRow('Avg Temp', '${day.avgTemp.forecast.toStringAsFixed(1)}°C', '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)'),
+            _detailRow('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)'),
+            _detailRow('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)'),
+            _detailRow('Humidity', '${day.avgHumidity.forecast.toStringAsFixed(0)}%', '(${day.avgHumidity.lower}–${day.avgHumidity.upper}%)'),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Close'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget _detailRow(String label, String value, String range) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          SizedBox(width: 100, child: Text(label, style: const TextStyle(fontWeight: FontWeight.w500))),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(width: 8),
+          Text(range, style: const TextStyle(color: Colors.grey)),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 160,
+      height: 180,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: forecast.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, __) => const SizedBox(width: 14),
         itemBuilder: (context, i) {
           final day = forecast[i];
           final date = DateTime.parse(day.date);
+          final formatedDate = DateFormat('dd/MM/yy').format(date); // Mon, Tue, etc.
           final dayOfWeek = DateFormat('E').format(date); // Mon, Tue, etc.
           final icon = _getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast);
-          final tempColor = _getTempColor(day.avgTemp.forecast);
-          return Container(
-            width: 130,
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(18),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.15),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(icon, color: tempColor, size: 26),
-                      const SizedBox(height: 6),
-                      Text(
-                        '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: tempColor),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        '↑${day.maxTemp.forecast.toStringAsFixed(0)}° ↓${day.minTemp.forecast.toStringAsFixed(0)}°',
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.water_drop, size: 16, color: Colors.blueAccent),
-                          const SizedBox(width: 2),
-                          Text('${day.avgHumidity.forecast.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 13)),
-                        ],
-                      ),
-                    ],
+          final gradient = _getCardGradient(day.avgTemp.forecast);
+          return GestureDetector(
+            onTap: () => _showDetails(context, day),
+            child: Container(
+              width: 140,
+              decoration: BoxDecoration(
+                gradient: gradient,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.18),
+                    blurRadius: 10,
+                    offset: const Offset(0, 6),
                   ),
-                  Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(icon, color: Colors.white, size: 38),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          '↑${day.maxTemp.forecast.toStringAsFixed(0)}° ↓${day.minTemp.forecast.toStringAsFixed(0)}°',
+                          style: const TextStyle(fontSize: 14, color: Colors.white70),
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.water_drop, size: 16, color: Colors.white),
+                            const SizedBox(width: 2),
+                            Text('${day.avgHumidity.forecast.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 14, color: Colors.white)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+                    // Positioned(top:0,right:0,child: Text(formatedDate, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: Colors.white))),
+                  ],
+                ),
               ),
             ),
           );
