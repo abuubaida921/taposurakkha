@@ -6,6 +6,7 @@ class SharedPreferencesHelper {
   static const String loginResponseKey = 'loginResponse';
   static const String emailKey = 'rememberedEmail';
   static const String passwordKey = 'rememberedPassword';
+  static const String languageCodeKey = 'languageCode';
 
   static Future<bool> getIsAuthenticated() async {
     final prefs = await SharedPreferences.getInstance();
@@ -55,5 +56,15 @@ class SharedPreferencesHelper {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(emailKey);
     await prefs.remove(passwordKey);
+  }
+
+  static Future<void> setLanguageCode(String code) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(languageCodeKey, code);
+  }
+
+  static Future<String?> getLanguageCode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(languageCodeKey);
   }
 }
