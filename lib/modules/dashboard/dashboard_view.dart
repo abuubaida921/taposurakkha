@@ -183,21 +183,18 @@ class _DashboardViewState extends State<DashboardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Today's Weather Card
-              if (_todayWeatherLoading)
-                const Center(child: BeautifulLoader())
-              else if (_todayWeather != null)
-                _TodayWeatherCard(today: _todayWeather!),
-              const SizedBox(height: 18),
               // Weather Forecast Section
               Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              if (_forecastLoading)
+              if (_forecastLoading || _todayWeatherLoading)
                 const Center(child: BeautifulLoader())
               else if (_forecastError != null)
                 Text(_forecastError!, style: const TextStyle(color: Colors.red))
-              else if (_forecastResponse != null)
-                _WeatherForecastList(forecast: _forecastResponse!.data.forecast),
+              else if (_forecastResponse != null && _todayWeather != null)
+                _WeatherForecastList(
+                  forecast: _forecastResponse!.data.forecast,
+                  todayWeather: _todayWeather,
+                ),
               const SizedBox(height: 24),
               GridView(
                 shrinkWrap: true,
@@ -304,7 +301,70 @@ class _FeatureCard extends StatelessWidget {
 // Weather forecast horizontal card list widget
 class _WeatherForecastList extends StatelessWidget {
   final List<WeatherForecastDay> forecast;
-  const _WeatherForecastList({required this.forecast});
+  final TodayWeatherResponse? todayWeather;
+  const _WeatherForecastList({required this.forecast, this.todayWeather});
+
+  static Widget _detailRowPro(String label, String value, String range, IconData icon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 6),
+          Text(label, style: const TextStyle(fontSize: 13)),
+          const SizedBox(width: 8),
+          Text(value, style: TextStyle(fontSize: 13, color: color, fontWeight: FontWeight.bold)),
+          const SizedBox(width: 6),
+          Text(range, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> cards = [];
+    if (todayWeather != null && forecast.isNotEmpty) {
+      // First card: use today's icon/temp, rest from forecast[0]
+      cards.add(_ForecastDayCard(
+        day: forecast[0],
+        overrideIconUrl: 'https:${todayWeather!.current.conditionIcon}',
+        overrideTemp: todayWeather!.current.tempC,
+        overrideConditionText: todayWeather!.current.conditionText,
+      ));
+      // Add the rest of the forecast days (skip first)
+      for (int i = 1; i < forecast.length; i++) {
+        cards.add(_ForecastDayCard(day: forecast[i]));
+      }
+    } else {
+      // Fallback: just show forecast days
+      for (final day in forecast) {
+        cards.add(_ForecastDayCard(day: day));
+      }
+    }
+    return SizedBox(
+      height: 180,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: cards.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 14),
+        itemBuilder: (context, i) => cards[i],
+      ),
+    );
+  }
+}
+
+class _ForecastDayCard extends StatelessWidget {
+  final WeatherForecastDay day;
+  final String? overrideIconUrl;
+  final double? overrideTemp;
+  final String? overrideConditionText;
+  const _ForecastDayCard({
+    required this.day,
+    this.overrideIconUrl,
+    this.overrideTemp,
+    this.overrideConditionText,
+  });
 
   IconData _getWeatherIcon(double avgTemp, double humidity) {
     if (humidity > 85) {
@@ -330,7 +390,7 @@ class _WeatherForecastList extends StatelessWidget {
     }
   }
 
-  void _showDetails(BuildContext context, WeatherForecastDay day) {
+  void _showDetails(BuildContext context) {
     final date = DateTime.parse(day.date);
     final dayOfWeek = DateFormat('EEEE').format(date);
     showModalBottomSheet(
@@ -341,7 +401,8 @@ class _WeatherForecastList extends StatelessWidget {
         title: dayOfWeek,
         subtitle: DateFormat('MMM d, yyyy').format(date),
         iconAsset: null,
-        temp: '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
+        iconUrl: overrideIconUrl, // Show today's icon if present
+        temp: overrideTemp != null ? '${overrideTemp!.toStringAsFixed(1)}°C' : '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
         minTemp: '${day.minTemp.forecast.toStringAsFixed(1)}°C',
         maxTemp: '${day.maxTemp.forecast.toStringAsFixed(1)}°C',
         humidity: '${day.avgHumidity.forecast.toStringAsFixed(0)}%',
@@ -354,195 +415,77 @@ class _WeatherForecastList extends StatelessWidget {
     );
   }
 
-  static Widget _detailRowPro(String label, String value, String range, IconData icon, Color iconColor) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: iconColor, size: 26),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-              Row(
-                children: [
-                  Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  const SizedBox(width: 8),
-                  Text(range, style: const TextStyle(color: Colors.grey, fontSize: 14)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 180,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: forecast.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 14),
-        itemBuilder: (context, i) {
-          final day = forecast[i];
-          final date = DateTime.parse(day.date);
-          final formatedDate = DateFormat('dd/MM/yy').format(date); // Mon, Tue, etc.
-          final dayOfWeek = DateFormat('E').format(date); // Mon, Tue, etc.
-          final icon = _getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast);
-          final gradient = _getCardGradient(day.avgTemp.forecast);
-          return GestureDetector(
-            onTap: () => _showDetails(context, day),
-            child: Container(
-              width: 140,
-              decoration: BoxDecoration(
-                gradient: gradient,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.18),
-                    blurRadius: 10,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                child: Stack(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(icon, color: Colors.white, size: 38),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          '↑${day.maxTemp.forecast.toStringAsFixed(0)}° ↓${day.minTemp.forecast.toStringAsFixed(0)}°',
-                          style: const TextStyle(fontSize: 14, color: Colors.white70),
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.water_drop, size: 16, color: Colors.white),
-                            const SizedBox(width: 2),
-                            Text('${day.avgHumidity.forecast.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 14, color: Colors.white)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-                    // Positioned(top:0,right:0,child: Text(formatedDate, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: Colors.white))),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-// Today's weather card widget
-class _TodayWeatherCard extends StatelessWidget {
-  final TodayWeatherResponse today;
-  const _TodayWeatherCard({required this.today});
-
-  void _showDetails(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => WeatherDetailsBottomSheet(
-        title: today.location.name,
-        subtitle: today.location.country,
-        iconUrl: 'https:${today.current.conditionIcon}',
-        temp: '${today.current.tempC.toStringAsFixed(1)}°C',
-        feelsLike: '${today.current.feelslikeC.toStringAsFixed(1)}°C',
-        humidity: '${today.current.humidity}%',
-        wind: '${today.current.windKph} km/h',
-        cloud: '${today.current.cloud}%',
-        extraRows: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(today.current.conditionText, style: const TextStyle(fontSize: 15, color: Colors.blueAccent)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    final double temp = overrideTemp ?? day.avgTemp.forecast;
+    final gradient = _getCardGradient(temp);
+    final date = DateTime.parse(day.date);
+    final dayOfWeek = DateFormat('E').format(date);
     return GestureDetector(
       onTap: () => _showDetails(context),
       child: Container(
+        width: 140,
         decoration: BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(16),
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              color: Colors.grey.withOpacity(0.18),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+          child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  'https:${today.current.conditionIcon}',
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      today.location.name,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${today.current.tempC.toStringAsFixed(1)}°C',
-                      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      today.current.conditionText,
-                      style: const TextStyle(fontSize: 14, color: Colors.white70),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.water_drop, color: Colors.white70, size: 20),
-                  const SizedBox(height: 4),
+                  if (overrideIconUrl != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        overrideIconUrl!,
+                        width: 38,
+                        height: 38,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else
+                    Icon(_getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast), color: Colors.white, size: 38),
+                  const SizedBox(height: 8),
                   Text(
-                    '${today.current.humidity}%',
-                    style: const TextStyle(fontSize: 14, color: Colors.white70),
+                    '${temp.toStringAsFixed(1)}°C',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+                  ),
+                  const SizedBox(height: 2),
+                  // if (overrideConditionText != null)
+                  //   Text(
+                  //     overrideConditionText!,
+                  //     style: const TextStyle(fontSize: 14, color: Colors.white70),
+                  //     textAlign: TextAlign.center,
+                  //     maxLines: 2,
+                  //     overflow: TextOverflow.ellipsis,
+                  //   )
+                  // else
+                    Text(
+                      '↑${day.maxTemp.forecast.toStringAsFixed(0)}° ↓${day.minTemp.forecast.toStringAsFixed(0)}°',
+                      style: const TextStyle(fontSize: 14, color: Colors.white70),
+                    ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.water_drop, size: 16, color: Colors.white),
+                      const SizedBox(width: 2),
+                      Text('${day.avgHumidity.forecast.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 14, color: Colors.white)),
+                    ],
                   ),
                 ],
               ),
+              Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
             ],
           ),
         ),
@@ -550,4 +493,3 @@ class _TodayWeatherCard extends StatelessWidget {
     );
   }
 }
-
