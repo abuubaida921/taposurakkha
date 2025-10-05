@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.1
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.12
+  device_info_plus: ^12.1.0
   flutter_localizations:
     sdk: flutter
   intl:
