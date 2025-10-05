@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../app/localization_controller.dart';
+import '../../l10n/app_localizations.dart';
 
 class HeatwaveSafetyTipsView extends StatelessWidget {
   const HeatwaveSafetyTipsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final LocalizationController localizationController = Get.find();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'তাপপ্রবাহ সতর্কতা', // Heatwave Safety Tips
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          loc.heatwaveSafety,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -20,7 +26,7 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
             const SizedBox(height: 16),
             // Heatwave Q&A Section
             _buildInfoCard(
-              title: 'তাপপ্রবাহের সময় করণীয় ও সতর্কতা',
+              title: loc.heatwavePrecautions,
               icon: Icons.question_answer,
               color: Colors.teal,
               children: [
@@ -31,10 +37,10 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildQAnswer([
-                  'পর্যাপ্ত পানি পান করুন',
-                  'শরীরের যত্নে সতর্ক থাকুন',
-                  'ছায়া বা জানালায় খুব বেশি সময় না কাটান',
-                  'বিশেষত শিশু ও বৃদ্ধদের জন্য বাড়তি সতর্কতা নিন',
+                  loc.drinkPlentyOfWater,
+                  loc.takeCareOfBody,
+                  loc.avoidDirectSunlight,
+                  loc.extraCautionForChildrenAndElderly,
                 ]),
                 const SizedBox(height: 16),
                 // Q2
@@ -44,70 +50,70 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildQGroup(
-                  group: 'শিশুদের জন্য',
-                  karon: 'তাপপ্রবাহে শিশুদের তাপমাত্রা দ্রুত বাড়তে পারে।',
-                  lokkho: 'অস্বস্তি, ঘাম, দুর্বলতা, খিটখিটে ভাব।',
+                  group: loc.forChildren,
+                  karon: loc.childrenHeatRisk,
+                  lokkho: loc.childrenSymptoms,
                   chobi: 'assets/images/child.png',
                   tips: [
-                    'সূর্যের সরাসরি আলো এড়িয়ে চলুন',
-                    'হালকা, ঢিলেঢালা পোশাক পরান',
-                    'পর্যাপ্ত পানি ও তরল খাবার দিন',
-                    'গরম সময় বাইরে না যাওয়ার চেষ্টা করুন',
+                    loc.avoidDirectSunlight,
+                    loc.wearLightLooseClothing,
+                    loc.provideAdequateWaterAndFluids,
+                    loc.avoidOutdoorActivitiesDuringHeat,
                   ],
                 ),
                 _buildQGroup(
-                  group: 'বয়স্কদের জন্য',
-                  karon: 'বয়স্কদের শরীরের তাপ নিয়ন্ত্রণ কম কার্যকর।',
-                  lokkho: 'বমি, মাথা ঘোরা, দুর্বলতা, দ্রুত ক্লান্তি।',
+                  group: loc.forElderly,
+                  karon: loc.elderlyHeatRisk,
+                  lokkho: loc.elderlySymptoms,
                   chobi: 'assets/images/elderly.png',
                   tips: [
-                    'গরম সময় বাইরে না থাকার পরামর্শ',
-                    'ফ্যান বা কুলার ব্যবহার করুন',
-                    'পর্যাপ্ত পানি পান নিশ্চিত করুন',
+                    loc.avoidGoingOutInHeat,
+                    loc.useFanOrCooler,
+                    loc.ensureAdequateWaterIntake,
                   ],
                 ),
                 _buildQGroup(
-                  group: 'তরুণদের জন্য',
-                  karon: 'বাইরের কাজ বা কসরত বেশি হয়।',
-                  lokkho: 'ঘাম, ক্লান্তি, মাথা ব্যথা।',
+                  group: loc.forYouth,
+                  karon: loc.youthOutdoorRisk,
+                  lokkho: loc.youthSymptoms,
                   chobi: 'assets/images/young.png',
                   tips: [
-                    'বাইরের কাজের সময় বিশ্রাম নিন',
-                    'ছাতা বা ক্যাপ ব্যবহার করুন',
-                    'পর্যাপ্ত পানি পান করুন',
+                    loc.takeBreaksDuringOutdoorWork,
+                    loc.useUmbrellaOrCap,
+                    loc.drinkPlentyOfWater,
                   ],
                 ),
                 _buildQGroup(
-                  group: 'গর্ভবতী নারীদের জন্য',
-                  karon: 'তাপপ্রবাহে গর্ভবতী নারীদের ঝুঁকি বেশি।',
-                  lokkho: 'বমি, মাথা ঘোরা, ক্লান্তি।',
+                  group: loc.forPregnantWomen,
+                  karon: loc.pregnantHeatRisk,
+                  lokkho: loc.pregnantSymptoms,
                   chobi: 'assets/images/pregnant.png',
                   tips: [
-                    'গরম সময় বাইরে না থাকার চেষ্টা করুন',
-                    'ঠান্ডা পানীয় পান করুন',
-                    'হালকা পোশাক পরুন',
+                    loc.avoidGoingOutInHeat,
+                    loc.drinkColdBeverages,
+                    loc.wearLightClothing,
                   ],
                 ),
                 _buildQGroup(
-                  group: 'বাইরের শ্রমিকদের জন্য',
-                  karon: 'সূর্যের নিচে কাজ করতে হয়।',
-                  lokkho: 'ঘাম, ক্লান্তি, মাথা ঘোরা।',
+                  group: loc.forOutdoorWorkers,
+                  karon: loc.outdoorWorkersRisk,
+                  lokkho: loc.outdoorWorkersSymptoms,
                   chobi: 'assets/images/worker.png',
                   tips: [
-                    'পর্যাপ্ত বিশ্রাম নিন',
-                    'পানি ও ইলেক্ট্রোলাইট পান করুন',
-                    'ছায়ায় কাজ করুন',
+                    loc.takeAdequateRest,
+                    loc.drinkWaterAndElectrolytes,
+                    loc.workInShade,
                   ],
                 ),
                 _buildQGroup(
-                  group: 'অসুস্থ বা দীর্ঘমেয়াদী রোগীদের জন্য',
-                  karon: 'তাপপ্রবাহে অসুস্থদের ঝুঁকি বেশি।',
-                  lokkho: 'দুর্বলতা, শ্বাসকষ্ট, মাথা ঘোরা।',
+                  group: loc.forSickOrChronicPatients,
+                  karon: loc.sickHeatRisk,
+                  lokkho: loc.sickSymptoms,
                   chobi: 'assets/images/sick.png',
                   tips: [
-                    'গরম সময় বাইরে না যাওয়ার চেষ্টা করুন',
-                    'পর্যাপ্ত পানি পান করুন',
-                    'ডাক্তারের পরামর্শ নিন',
+                    loc.avoidGoingOutInHeat,
+                    loc.drinkPlentyOfWater,
+                    loc.consultDoctor,
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -118,9 +124,9 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildQAnswer([
-                  'ছায়ায় থাকুন এবং ঠান্ডা পরিবেশে বিশ্রাম নিন',
-                  'ঠান্ডা পানি পান করুন এবং হালকা কাপড় পরুন',
-                  'হাত ও মুখ ঠান্ডা পানি দিয়ে ধুয়ে নিন',
+                  loc.stayInShadeAndRestInCoolPlace,
+                  loc.drinkColdWaterAndWearLightClothes,
+                  loc.washHandsAndFaceWithColdWater,
                 ]),
                 const SizedBox(height: 16),
                 // Q4
@@ -130,9 +136,9 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildQAnswer([
-                  'জানালা ও দরজা বন্ধ রাখুন',
-                  'হালকা পর্দা ব্যবহার করুন',
-                  'ফ্যান ব্যবহার করুন',
+                  loc.keepWindowsAndDoorsClosed,
+                  loc.useLightCurtains,
+                  loc.useFan,
                 ]),
                 const SizedBox(height: 16),
                 // Q5
@@ -142,10 +148,10 @@ class HeatwaveSafetyTipsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildQAnswer([
-                  'তরল ও সহজপাচ্য খাবার খান',
-                  'ভাজা ও ভারী খাবার এড়িয়ে চলুন',
-                  'ফলমূল ও শাকসবজি বেশি খান',
-                  'পর্যাপ্ত প্রোটিন ও মিনারেল যুক্ত খাবার খান',
+                  loc.eatLiquidAndEasilyDigestibleFoods,
+                  loc.avoidFriedAndHeavyFoods,
+                  loc.eatMoreFruitsAndVegetables,
+                  loc.consumeAdequateProteinAndMinerals,
                 ]),
                 const SizedBox(height: 8),
                 // Special info (italic, no bullet)

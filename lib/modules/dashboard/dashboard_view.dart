@@ -53,14 +53,45 @@ class _DashboardViewState extends State<DashboardView> {
       );
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('তাপসুরক্ষা')), // App name in Bangla
+      appBar: AppBar(
+        title: const Text('তাপসুরক্ষা'), // App name in Bangla
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Get.toNamed('/settings');
+            },
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: const Center(child: Text('Welcome Guest', style: TextStyle(color: Colors.white, fontSize: 18))),
+              decoration: const BoxDecoration(
+                color: Colors.teal,
+              ),
+              child: const Text(
+                'তাপসুরক্ষা',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('ভাষা পরিবর্তন করুন'),
+              onTap: () {
+                Navigator.pop(context);
+                Get.toNamed('/settings');
+              },
             ),
             ListTile(
               leading: const Icon(Icons.home),

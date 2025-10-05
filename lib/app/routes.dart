@@ -14,6 +14,7 @@ import '../modules/about/about_view.dart';
 import '../modules/heatwave_info/heatwave_safety_tips_view.dart';
 import '../modules/heatwave_info/osm_mapping_view.dart';
 import '../modules/heatwave_info/emergency_helpline_view.dart';
+import '../modules/settings/settings_view.dart';
 class AppRoutes {
   static const splash = '/splash';
   static const login = '/login';
@@ -30,6 +31,7 @@ class AppRoutes {
   static const heatAlert = '/heat_alert';
   static const osmMapping = '/osm_mapping';
   static const emergencyHelpline = '/emergency_helpline';
+  static const settings = '/settings';
 
   static final pages = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -47,5 +49,10 @@ class AppRoutes {
     GetPage(name: osmMapping, page: () => const OsmMappingView()),
     GetPage(name: heatAlert, page: () => const HeatAlertView()),
     GetPage(name: emergencyHelpline, page: () => const EmergencyHelplineView()),
+    GetPage(
+      name: settings,
+      page: () => const SettingsView(),
+      transition: Transition.cupertino,
+    ),
   ];
 }

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
+import '../../app/localization_controller.dart';
 
 class OsmMappingView extends StatelessWidget {
   const OsmMappingView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final LocalizationController localizationController = Get.find();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'ওএসএম ম্যাপিং', // OSM Mapping
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          loc.osmMapping,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -18,37 +24,37 @@ class OsmMappingView extends StatelessWidget {
           children: [
             // Q1 Card
             _buildInfoCard(
-              title: 'Q1: তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান কোথায়?',
+              title: loc.safeShelterQ,
               icon: Icons.search,
               color: Colors.blue,
-              children: const [
+              children: [
                 Text(
-                  'উত্তর:',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  '${loc.language == 'English' ? 'Answer:' : 'উত্তর:'}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
-                  'অফিস, হাসপাতাল, স্বাস্থ্য সহায়তা কেন্দ্র বা স্থানীয় সেবা প্রদানকারী স্থানগুলোর মানচিত্র দেখুন। আশেপাশে পানির উৎসের অবস্থানও জানা জরুরি।',
-                  style: TextStyle(fontSize: 16),
+                  loc.safeShelterA,
+                  style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
-                  'মানচিত্র দেখুন।',
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: Colors.deepOrange),
+                  loc.seeMap,
+                  style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: Colors.deepOrange),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             // Q2 Card
             _buildInfoCard(
-              title: 'Q2: স্থানীয় সেবা প্রদানকারীদের মানচিত্র',
+              title: loc.serviceMapQ,
               icon: Icons.map_outlined,
               color: Colors.green,
               children: [
-                _buildBulletPoint('তাপপ্রবাহের সময় নিরাপদ আশ্রয়ের স্থান এবং স্থানীয় সেবা প্রদানকারীদের মানচিত্র (Map of safe shelters and local service providers during a heatwave)'),
-                _buildBulletPoint('আশেপাশের পানির উৎসের অবস্থান (Location of nearby water sources)'),
-                _buildBulletPoint('হাসপাতাল, ক্লিনিক এবং স্বাস্থ্য সহায়তা কেন্দ্রের মানচিত্র (Map of hospitals, clinics, and health support centers)'),
-                _buildBulletPoint('জরুরি অবস্থায় সহায়তার জন্য তাপপ্রবাহের সময় দ্রুত পেতে সহায়ক মানচিত্র (Heatwave response map with quick access to emergency help)'),
+                _buildBulletPoint(loc.serviceMapA1),
+                _buildBulletPoint(loc.serviceMapA2),
+                _buildBulletPoint(loc.serviceMapA3),
+                _buildBulletPoint(loc.serviceMapA4),
               ],
             ),
           ],
