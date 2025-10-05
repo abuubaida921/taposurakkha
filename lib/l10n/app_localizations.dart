@@ -700,6 +700,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Red rash or blisters, burning or itching skin'**
   String get skinProblemSymptom;
+
+  /// No description provided for @answerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer: '**
+  String get answerLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

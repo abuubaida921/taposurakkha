@@ -29,7 +29,7 @@ class OsmMappingView extends StatelessWidget {
               color: Colors.blue,
               children: [
                 Text(
-                  '${loc.language == 'English' ? 'Answer:' : 'উত্তর:'}',
+                  loc.answerLabel,
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 6),

@@ -99,5 +99,6 @@
   "dehydrationSymptom": "Thirst, dry mouth, less urination, weakness, sunken and dry eyes",
   "skinProblem": "Skin Problem",
   "skinProblemCause": "Sweat accumulation causing skin issues",
-  "skinProblemSymptom": "Red rash or blisters, burning or itching skin"
+  "skinProblemSymptom": "Red rash or blisters, burning or itching skin",
+  "answerLabel": "Answer: "
 }

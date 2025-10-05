@@ -310,4 +310,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skinProblemSymptom => 'Red rash or blisters, burning or itching skin';
+
+  @override
+  String get answerLabel => 'Answer: ';
 }

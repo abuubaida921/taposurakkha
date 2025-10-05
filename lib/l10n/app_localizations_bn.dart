@@ -310,4 +310,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get skinProblemSymptom => 'লালচে দাগ বা ফুসকুড়ি, ত্বকে জ্বালা বা চুলকানি';
+
+  @override
+  String get answerLabel => 'উত্তর: ';
 }
