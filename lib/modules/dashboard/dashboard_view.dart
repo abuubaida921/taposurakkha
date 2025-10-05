@@ -12,6 +12,9 @@ import '../../l10n/app_localizations.dart';
 import '../../app/localization_controller.dart';
 import 'weather_forecast_model.dart';
 import 'weather_forecast_service.dart';
+import 'today_weather_model.dart';
+import 'today_weather_service.dart';
+import 'weather_details_bottom_sheet.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -29,14 +32,17 @@ class _DashboardViewState extends State<DashboardView> {
   bool _forecastLoading = true;
   String? _forecastError;
 
+  TodayWeatherResponse? _todayWeather;
+  bool _todayWeatherLoading = true;
+
   static const String _weatherCacheKey = 'weather_forecast_cache';
-  final apiKey = dotenv.env['API_KEY'];
 
   @override
   void initState() {
     super.initState();
     _checkAuth();
     _loadCachedForecast();
+    _fetchTodayWeather();
     _fetchForecast();
   }
 
@@ -95,6 +101,36 @@ class _DashboardViewState extends State<DashboardView> {
     }
   }
 
+  Future<void> _fetchTodayWeather() async {
+    setState(() {
+      _todayWeatherLoading = true;
+    });
+    final res = await TodayWeatherService.fetchTodayWeather();
+    if (res != null) {
+      // Optionally adjust temp to blend with forecast
+      final adjusted = TodayWeatherResponse(
+        location: res.location,
+        current: TodayWeatherCurrent(
+          tempC: res.current.tempC + (res.current.tempC > 25 ? -0.5 : 0.5),
+          humidity: res.current.humidity,
+          conditionText: res.current.conditionText,
+          conditionIcon: res.current.conditionIcon,
+          feelslikeC: res.current.feelslikeC,
+          windKph: res.current.windKph,
+          cloud: res.current.cloud,
+        ),
+      );
+      setState(() {
+        _todayWeather = adjusted;
+        _todayWeatherLoading = false;
+      });
+    } else {
+      setState(() {
+        _todayWeatherLoading = false;
+      });
+    }
+  }
+
   void _logout() async {
     await SharedPreferencesHelper.setIsAuthenticated(false);
     await SharedPreferencesHelper.setLoginResponse({});
@@ -147,7 +183,12 @@ class _DashboardViewState extends State<DashboardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(apiKey!),
+              // Today's Weather Card
+              if (_todayWeatherLoading)
+                const Center(child: BeautifulLoader())
+              else if (_todayWeather != null)
+                _TodayWeatherCard(today: _todayWeather!),
+              const SizedBox(height: 18),
               // Weather Forecast Section
               Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
@@ -296,78 +337,19 @@ class _WeatherForecastList extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => DraggableScrollableSheet(
-        initialChildSize: 0.45,
-        minChildSize: 0.35,
-        maxChildSize: 0.85,
-        expand: false,
-        builder: (context, scrollController) => Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x22000000),
-                blurRadius: 16,
-                offset: Offset(0, -2),
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
-                child: ListView(
-                  controller: scrollController,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 5,
-                        margin: const EdgeInsets.only(bottom: 18),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(_getWeatherIcon(day.avgTemp.forecast, day.avgHumidity.forecast), size: 38, color: Colors.amber.shade700),
-                        const SizedBox(width: 14),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(dayOfWeek, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
-                            Text(DateFormat('MMM d, yyyy').format(date), style: const TextStyle(fontSize: 15, color: Colors.grey)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    _detailRowPro('Avg Temp', '${day.avgTemp.forecast.toStringAsFixed(1)}°C', '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)', Icons.thermostat, Colors.orange),
-                    const Divider(height: 24),
-                    _detailRowPro('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)', Icons.arrow_upward, Colors.redAccent),
-                    const SizedBox(height: 8),
-                    _detailRowPro('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)', Icons.arrow_downward, Colors.blueAccent),
-                    const Divider(height: 24),
-                    _detailRowPro('Humidity', '${day.avgHumidity.forecast.toStringAsFixed(0)}%', '(${day.avgHumidity.lower}–${day.avgHumidity.upper}%)', Icons.water_drop, Colors.blue),
-                  ],
-                ),
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: IconButton(
-                  icon: const Icon(Icons.close_rounded, size: 28, color: Colors.grey),
-                  onPressed: () => Navigator.pop(ctx),
-                  tooltip: 'Close',
-                ),
-              ),
-            ],
-          ),
-        ),
+      builder: (ctx) => WeatherDetailsBottomSheet(
+        title: dayOfWeek,
+        subtitle: DateFormat('MMM d, yyyy').format(date),
+        iconAsset: null,
+        temp: '${day.avgTemp.forecast.toStringAsFixed(1)}°C',
+        minTemp: '${day.minTemp.forecast.toStringAsFixed(1)}°C',
+        maxTemp: '${day.maxTemp.forecast.toStringAsFixed(1)}°C',
+        humidity: '${day.avgHumidity.forecast.toStringAsFixed(0)}%',
+        range: '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)',
+        extraRows: [
+          _WeatherForecastList._detailRowPro('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)', Icons.arrow_upward, Colors.redAccent),
+          _WeatherForecastList._detailRowPro('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)', Icons.arrow_downward, Colors.blueAccent),
+        ],
       ),
     );
   }
@@ -468,3 +450,104 @@ class _WeatherForecastList extends StatelessWidget {
     );
   }
 }
+
+// Today's weather card widget
+class _TodayWeatherCard extends StatelessWidget {
+  final TodayWeatherResponse today;
+  const _TodayWeatherCard({required this.today});
+
+  void _showDetails(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => WeatherDetailsBottomSheet(
+        title: today.location.name,
+        subtitle: today.location.country,
+        iconUrl: 'https:${today.current.conditionIcon}',
+        temp: '${today.current.tempC.toStringAsFixed(1)}°C',
+        feelsLike: '${today.current.feelslikeC.toStringAsFixed(1)}°C',
+        humidity: '${today.current.humidity}%',
+        wind: '${today.current.windKph} km/h',
+        cloud: '${today.current.cloud}%',
+        extraRows: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(today.current.conditionText, style: const TextStyle(fontSize: 15, color: Colors.blueAccent)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _showDetails(context),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blueAccent,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  'https:${today.current.conditionIcon}',
+                  width: 64,
+                  height: 64,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      today.location.name,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${today.current.tempC.toStringAsFixed(1)}°C',
+                      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      today.current.conditionText,
+                      style: const TextStyle(fontSize: 14, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.water_drop, color: Colors.white70, size: 20),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${today.current.humidity}%',
+                    style: const TextStyle(fontSize: 14, color: Colors.white70),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
