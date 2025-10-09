@@ -17,6 +17,7 @@ import '../modules/heatwave_info/emergency_helpline_view.dart';
 import '../modules/settings/settings_view.dart';
 import '../modules/heatwave_info/heatwave_answer_view.dart';
 import '../modules/heatwave_info/heatwave_safety_tips_answer_view.dart';
+import '../modules/heatwave_info/heat_alert_section_detail_view.dart';
 class AppRoutes {
   static const splash = '/splash';
   static const login = '/login';
@@ -58,5 +59,6 @@ class AppRoutes {
       page: () => const SettingsView(),
       transition: Transition.cupertino,
     ),
+    GetPage(name: '/heat_alert_section_detail', page: () => const HeatAlertSectionDetailView()),
   ];
 }
