@@ -40,6 +40,9 @@ dependencies:
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.12
   device_info_plus: ^12.1.0
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  geolocator: ^14.0.2
   flutter_localizations:
     sdk: flutter
   intl:
@@ -72,6 +75,7 @@ flutter:
     - assets/images/logo.png
     - assets/fonts/SolaimanLipi_20-04-07.ttf
     - .env
+    - assets/healthcare_pharmacy.geojson
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

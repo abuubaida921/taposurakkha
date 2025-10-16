@@ -6,6 +6,7 @@ import '../modules/auth/register_view.dart';
 import '../modules/dashboard/dashboard_view.dart';
 import '../modules/heatwave_info/heat_alert_view.dart';
 import '../modules/heatwave_info/heatwave_info_view.dart';
+import '../modules/heatwave_info/places_map_page.dart';
 import '../modules/splash/splash_view.dart';
 import '../modules/help_support/help_support_view.dart';
 import '../modules/terms_conditions/terms_conditions_view.dart';
@@ -49,7 +50,8 @@ class AppRoutes {
     // GetPage(name: legalHelp, page: () => const LegalHelpView()),
     GetPage(name: heatwaveInfo, page: () =>  HeatwaveInfoView()),
     GetPage(name: heatwaveSafetyTips, page: () => const HeatwaveSafetyTipsView()),
-    GetPage(name: osmMapping, page: () => const OsmMappingView()),
+    GetPage(name: osmMapping, page: () => PlacesMapPage()),
+    // GetPage(name: osmMapping, page: () => const OsmMappingView()),
     GetPage(name: heatAlert, page: () => const HeatAlertView()),
     GetPage(name: '/heatwave_answer', page: () => const HeatwaveAnswerView()),
     GetPage(name: '/heatwave_safety_tip_answer', page: () => const HeatwaveSafetyTipsAnswerView()),
