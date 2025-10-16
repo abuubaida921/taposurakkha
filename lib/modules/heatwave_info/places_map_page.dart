@@ -20,6 +20,10 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   LatLng? userLocation;
   String searchQuery = "";
 
+  // Map controller and zoom state for zoom + location controls
+  final MapController _mapController = MapController();
+  double _zoom = 13.0;
+
   @override
   void initState() {
     super.initState();
@@ -113,77 +117,145 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
             ),
           ),
           Expanded(
-            child: FlutterMap(
-              options: MapOptions(
-                initialCenter: userLocation ?? const LatLng(23.8103, 90.4125), // Dhaka fallback
-                initialZoom: 13.0,
-              ),
+            child: Stack(
               children: [
-                TileLayer(
-                  urlTemplate:
-                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: const ['a', 'b', 'c'],
+                FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: userLocation ?? const LatLng(23.8103, 90.4125), // Dhaka fallback
+                    initialZoom: _zoom,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                    ),
+                    if (userLocation != null)
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: userLocation!,
+                            width: 40,
+                            height: 40,
+                            child: const Icon(Icons.my_location,
+                                color: Colors.blue, size: 30),
+                          )
+                        ],
+                      ),
+                    MarkerLayer(
+                      markers: filteredPlaces.map((place) {
+                        final LatLng point = LatLng(place['lat'], place['lng']);
+                        double? distance;
+                        if (userLocation != null) {
+                          distance = calculateDistance(userLocation!, point);
+                        }
+
+                        return Marker(
+                          point: point,
+                          width: 160,
+                          height: 60,
+                          child: GestureDetector(
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                  AppLocalizations.of(context)!.placeDistance(
+                                    (distance ?? 0).toStringAsFixed(2),
+                                    place['name'],
+                                  ),
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ));
+                            },
+                            child: Column(
+                              children: [
+                                const Icon(Icons.location_on,
+                                    color: Colors.red, size: 32),
+                                Container(
+                                  width: 150,
+                                  padding:
+                                  const EdgeInsets.symmetric(horizontal: 4),
+                                  child: Text(
+                                    place['name'],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-                if (userLocation != null)
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: userLocation!,
-                        width: 40,
-                        height: 40,
-                        child: const Icon(Icons.my_location,
-                            color: Colors.blue, size: 30),
-                      )
+
+                // Zoom and My Location buttons
+                Positioned(
+                  bottom: 16,
+                  right: 12,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // My location
+                      FloatingActionButton(
+                        heroTag: 'locate',
+                        mini: true,
+                        onPressed: () {
+                          if (userLocation != null) {
+                            setState(() {
+                              _zoom = 15.0;
+                            });
+                            // Some flutter_map versions don't expose MapController.center.
+                            // Use userLocation as center fallback to avoid undefined getter errors.
+                            final center = userLocation ?? const LatLng(23.8103, 90.4125);
+                            _mapController.move(center, _zoom);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(AppLocalizations.of(context)!.enableLocationServices),
+                            ));
+                          }
+                        },
+                        child: const Icon(Icons.my_location,color: Colors.white),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Zoom in
+                      FloatingActionButton(
+                        heroTag: 'zoomIn',
+                        mini: true,
+                        onPressed: () {
+                          setState(() {
+                            if (_zoom < 18) _zoom += 1;
+                          });
+                          final center = userLocation ?? const LatLng(23.8103, 90.4125);
+                          _mapController.move(center, _zoom);
+                        },
+                        child: const Icon(Icons.zoom_in,color: Colors.white),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Zoom out
+                      FloatingActionButton(
+                        heroTag: 'zoomOut',
+                        mini: true,
+                        onPressed: () {
+                          setState(() {
+                            if (_zoom > 3) _zoom -= 1;
+                          });
+                          final center = userLocation ?? const LatLng(23.8103, 90.4125);
+                          _mapController.move(center, _zoom);
+                        },
+                        child: const Icon(Icons.zoom_out,color: Colors.white,),
+                      ),
                     ],
                   ),
-                MarkerLayer(
-                  markers: filteredPlaces.map((place) {
-                    final LatLng point = LatLng(place['lat'], place['lng']);
-                    double? distance;
-                    if (userLocation != null) {
-                      distance = calculateDistance(userLocation!, point);
-                    }
-
-                    return Marker(
-                      point: point,
-                      width: 160,
-                      height: 60,
-                      child: GestureDetector(
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                              AppLocalizations.of(context)!.placeDistance(
-                                (distance ?? 0).toStringAsFixed(2),
-                                place['name'],
-                              ),
-                            ),
-                            duration: const Duration(seconds: 2),
-                          ));
-                        },
-                        child: Column(
-                          children: [
-                            const Icon(Icons.location_on,
-                                color: Colors.red, size: 32),
-                            Container(
-                              width: 150,
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 4),
-                              child: Text(
-                                place['name'],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList(),
                 ),
+
               ],
             ),
           ),
