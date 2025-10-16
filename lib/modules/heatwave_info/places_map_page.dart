@@ -6,6 +6,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class PlacesMapPage extends StatefulWidget {
   const PlacesMapPage({super.key});
 
@@ -57,8 +59,8 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   Future<void> getUserLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Please enable Location Services in settings.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.enableLocationServices)));
       return;
     }
 
@@ -68,8 +70,8 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Location permission denied.')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.locationPermissionDenied)));
         return;
       }
     }
@@ -95,17 +97,17 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nearby Pharmacies'),
+        title: Text(AppLocalizations.of(context)!.nearbyPharmacies),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
-              decoration: const InputDecoration(
-                hintText: "Search place...",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.searchPlaceHint,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (value) => setState(() => searchQuery = value),
             ),
@@ -150,7 +152,10 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
-                              '${place['name']} - ${(distance ?? 0).toStringAsFixed(2)} km away',
+                              AppLocalizations.of(context)!.placeDistance(
+                                (distance ?? 0).toStringAsFixed(2),
+                                place['name'],
+                              ),
                             ),
                             duration: const Duration(seconds: 2),
                           ));

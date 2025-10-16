@@ -898,6 +898,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weather Forecast'**
   String get weatherForecast;
+
+  /// No description provided for @nearbyPharmacies.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Pharmacies'**
+  String get nearbyPharmacies;
+
+  /// No description provided for @searchPlaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search place...'**
+  String get searchPlaceHint;
+
+  /// No description provided for @enableLocationServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable Location Services in settings.'**
+  String get enableLocationServices;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @placeDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} - {distance} km away'**
+  String placeDistance(Object distance, Object name);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

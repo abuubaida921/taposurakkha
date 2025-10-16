@@ -132,5 +132,10 @@
   "heatAlertWarningLevelRed": "লাল সংকেত: তীব্র তাপপ্রবাহ, দীর্ঘস্থায়ী গরম আবহাওয়া।",
   "heatAlertWarningLevelYellow": "হলুদ সংকেত: মাঝারি তাপমাত্রা বৃদ্ধি, কিছু সতর্কতা প্রয়োজন।",
   "heatAlertWarningLevelGreen": "সবুজ সংকেত: সাধারণ গরম, তেমন কোন বিশেষ সতর্কতার প্রয়োজন নেই।",
-  "weatherForecast": "আবহাওয়ার পূর্বাভাস"
+  "weatherForecast": "আবহাওয়ার পূর্বাভাস",
+  "nearbyPharmacies": "নিকটস্থ ফার্মেসি",
+  "searchPlaceHint": "স্থান অনুসন্ধান করুন...",
+  "enableLocationServices": "অনুগ্রহ করে সেটিংসে লোকেশন সার্ভিস চালু করুন।",
+  "locationPermissionDenied": "লোকেশন অনুমতি বাতিল হয়েছে।",
+  "placeDistance": "{name} - {distance} কিমি দূরে"
 }

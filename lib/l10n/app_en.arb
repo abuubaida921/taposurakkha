@@ -132,5 +132,10 @@
   "heatAlertWarningLevelRed": "Red Alert: Severe heatwave, prolonged hot weather.",
   "heatAlertWarningLevelYellow": "Yellow Alert: Moderate temperature rise, some caution needed.",
   "heatAlertWarningLevelGreen": "Green Alert: Normal heat, no special caution needed.",
-  "weatherForecast": "Weather Forecast"
+  "weatherForecast": "Weather Forecast",
+  "nearbyPharmacies": "Nearby Pharmacies",
+  "searchPlaceHint": "Search place...",
+  "enableLocationServices": "Please enable Location Services in settings.",
+  "locationPermissionDenied": "Location permission denied.",
+  "placeDistance": "{name} - {distance} km away"
 }

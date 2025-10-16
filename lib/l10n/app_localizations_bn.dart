@@ -409,4 +409,21 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get weatherForecast => 'আবহাওয়ার পূর্বাভাস';
+
+  @override
+  String get nearbyPharmacies => 'নিকটস্থ ফার্মেসি';
+
+  @override
+  String get searchPlaceHint => 'স্থান অনুসন্ধান করুন...';
+
+  @override
+  String get enableLocationServices => 'অনুগ্রহ করে সেটিংসে লোকেশন সার্ভিস চালু করুন।';
+
+  @override
+  String get locationPermissionDenied => 'লোকেশন অনুমতি বাতিল হয়েছে।';
+
+  @override
+  String placeDistance(Object distance, Object name) {
+    return '$name - $distance কিমি দূরে';
+  }
 }

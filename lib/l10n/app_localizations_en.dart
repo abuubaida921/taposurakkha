@@ -409,4 +409,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weatherForecast => 'Weather Forecast';
+
+  @override
+  String get nearbyPharmacies => 'Nearby Pharmacies';
+
+  @override
+  String get searchPlaceHint => 'Search place...';
+
+  @override
+  String get enableLocationServices => 'Please enable Location Services in settings.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied.';
+
+  @override
+  String placeDistance(Object distance, Object name) {
+    return '$name - $distance km away';
+  }
 }
