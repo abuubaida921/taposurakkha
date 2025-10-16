@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
 
@@ -12,6 +14,48 @@ class EmergencyHelplineView extends StatelessWidget {
     const Color accentColor = Color(0xFFFBE9E7); // Light accent for background
     const Color textColor = Color(0xFF212121);
     const Color secondaryTextColor = Color(0xFF757575);
+
+    // Local helper: sanitize phone number (keep digits and +)
+    String sanitizeNumber(String raw) => raw.replaceAll(RegExp(r'[^+0-9]'), '');
+
+    // Local helper: launch dialer
+    Future<void> _launchPhone(BuildContext ctx, String rawNumber) async {
+      final number = sanitizeNumber(rawNumber);
+      if (number.isEmpty) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(content: Text('No valid phone number available')),
+        );
+        return;
+      }
+
+      final uri = Uri(scheme: 'tel', path: number);
+      try {
+        if (!await launchUrl(uri)) {
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(content: Text('Could not open dialer')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(content: Text('Could not open dialer')),
+        );
+      }
+    }
+
+    // Local helper: copy to clipboard with feedback
+    void _copyNumber(BuildContext ctx, String rawNumber) {
+      final number = sanitizeNumber(rawNumber);
+      if (number.isEmpty) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(content: Text('No valid phone number to copy')),
+        );
+        return;
+      }
+      Clipboard.setData(ClipboardData(text: number));
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(content: Text('Copied $number')),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -41,28 +85,51 @@ class EmergencyHelplineView extends StatelessWidget {
             const SizedBox(height: 16),
             // Professional Card for Services
             _buildServicesCard(
+              context: context,
               title: AppLocalizations.of(context)!.emergencyHelplineServicesTitle,
               icon: Icons.local_hospital_outlined,
               items: [
                 _ServiceItem(
-                  title: AppLocalizations.of(context)!.emergencyHelplineService1Title,
-                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService1Subtitle,
+                  title: 'Emergency Helpline',
+                  subtitle: '999',
                   icon: Icons.phone_in_talk_outlined,
                 ),
                 _ServiceItem(
-                  title: AppLocalizations.of(context)!.emergencyHelplineService2Title,
-                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService2Subtitle,
-                  icon: Icons.public_outlined,
+                  title: 'Health-Service Helpline (24-hour doctor advice)',
+                  subtitle: '16263',
+                  icon: Icons.local_hospital,
                 ),
                 _ServiceItem(
-                  title: AppLocalizations.of(context)!.emergencyHelplineService3Title,
-                  subtitle: AppLocalizations.of(context)!.emergencyHelplineService3Subtitle,
-                  icon: Icons.phone_in_talk,
+                  title: 'Ambulance Service',
+                  subtitle: 'Contact',
+                  icon: Icons.local_shipping,
+                ),
+                _ServiceItem(
+                  title: '24h ambulance service',
+                  subtitle: '01911125156',
+                  icon: Icons.local_hospital,
+                ),
+                _ServiceItem(
+                  title: 'Health X BD',
+                  subtitle: '01969-908181',
+                  icon: Icons.health_and_safety,
+                ),
+                _ServiceItem(
+                  title: 'Doctors Support Centre',
+                  subtitle: '01818-031380',
+                  icon: Icons.support_agent,
+                ),
+                _ServiceItem(
+                  title: 'Alo clinic, Korail',
+                  subtitle: '01322-905355',
+                  icon: Icons.local_hospital_rounded,
                 ),
               ],
               primaryColor: primaryColor,
               textColor: textColor,
               secondaryTextColor: secondaryTextColor,
+              onTapPhone: _launchPhone,
+              onCopy: _copyNumber,
             ),
           ],
         ),
@@ -127,12 +194,15 @@ class EmergencyHelplineView extends StatelessWidget {
 
   // Helper method to build a services card with a list of items
   Widget _buildServicesCard({
+    required BuildContext context,
     required String title,
     required IconData icon,
     required List<_ServiceItem> items,
     required Color primaryColor,
     required Color textColor,
     required Color secondaryTextColor,
+    required Future<void> Function(BuildContext, String) onTapPhone,
+    required void Function(BuildContext, String) onCopy,
   }) {
     return Card(
       elevation: 4,
@@ -173,8 +243,49 @@ class EmergencyHelplineView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '• ${item.title}',
-                          style: TextStyle(fontSize: 16, color: textColor),
+                          item.title,
+                          style: TextStyle(fontSize: 16, color: textColor, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            // tappable number (if valid)
+                            GestureDetector(
+                              onTap: () {
+                                if (item.subtitle.toLowerCase() != 'contact') {
+                                  onTapPhone(context, item.subtitle);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Contact details not available')),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                item.subtitle,
+                                style: TextStyle(fontSize: 14, color: secondaryTextColor, decoration: item.subtitle.toLowerCase() != 'contact' ? TextDecoration.underline : TextDecoration.none),
+                              ),
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            // copy button
+                            IconButton(
+                              icon: const Icon(Icons.copy, size: 18),
+                              color: primaryColor,
+                              tooltip: 'Copy',
+                              onPressed: () => onCopy(context, item.subtitle),
+                            ),
+
+                            // call button (visible only when number is not 'Contact')
+                            if (item.subtitle.toLowerCase() != 'contact')
+                              IconButton(
+                                icon: const Icon(Icons.call, size: 18),
+                                color: primaryColor,
+                                tooltip: 'Call',
+                                onPressed: () => onTapPhone(context, item.subtitle),
+                              ),
+
+                          ],
                         ),
                       ],
                     ),
