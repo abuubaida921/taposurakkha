@@ -426,4 +426,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String placeDistance(Object distance, Object name) {
     return '$name - $distance কিমি দূরে';
   }
+
+  @override
+  String get shareApp => 'অ্যাপ শেয়ার করুন';
+
+  @override
+  String get shareAppMessage => 'Taposurakkha অ্যাপটি দেখুন - তাপপ্রবাহের সময় নিরাপদ থাকুন: https://example.com';
 }

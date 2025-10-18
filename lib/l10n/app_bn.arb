@@ -137,5 +137,7 @@
   "searchPlaceHint": "স্থান অনুসন্ধান করুন...",
   "enableLocationServices": "অনুগ্রহ করে সেটিংসে লোকেশন সার্ভিস চালু করুন।",
   "locationPermissionDenied": "লোকেশন অনুমতি বাতিল হয়েছে।",
-  "placeDistance": "{name} - {distance} কিমি দূরে"
+  "placeDistance": "{name} - {distance} কিমি দূরে",
+  "shareApp": "অ্যাপ শেয়ার করুন",
+  "shareAppMessage": "Taposurakkha অ্যাপটি দেখুন - তাপপ্রবাহের সময় নিরাপদ থাকুন: https://example.com"
 }

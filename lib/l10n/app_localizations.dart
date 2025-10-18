@@ -928,6 +928,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} - {distance} km away'**
   String placeDistance(Object distance, Object name);
+
+  /// No description provided for @shareApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get shareApp;
+
+  /// No description provided for @shareAppMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out Taposurakkha app - stay safe during heatwaves: https://example.com'**
+  String get shareAppMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

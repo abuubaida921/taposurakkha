@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:taposurakkha/app/routes.dart';
@@ -25,7 +24,6 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   bool _loading = true;
-  double? _temperature;
   final TextEditingController _tempController = TextEditingController();
 
   WeatherForecastResponse? _forecastResponse;
@@ -237,7 +235,7 @@ class _DashboardViewState extends State<DashboardView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Weather Forecast Section
-              Text(loc.weatherForecast ?? 'Weather Forecast', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(loc.weatherForecast, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               if (_forecastLoading || _todayWeatherLoading)
                 const Center(child: BeautifulLoader())
@@ -262,13 +260,13 @@ class _DashboardViewState extends State<DashboardView> {
                   _FeatureCard(
                     icon: Icons.info,
                     color: Colors.orange,
-                    title: loc.heatwaveInfo ?? 'তাপপ্রবাহের ধারনা',
+                    title: loc.heatwaveInfo,
                     onTap: () => Get.toNamed(AppRoutes.heatwaveInfo),
                   ),
                   _FeatureCard(
                     icon: Icons.warning_amber,
                     color: Colors.redAccent,
-                    title: loc.heatwaveSafety ?? 'তাপপ্রবাহ সতর্কতা',
+                    title: loc.heatwaveSafety,
                     onTap: () => Get.toNamed(AppRoutes.heatwaveSafetyTips),
                   ),
                   _FeatureCard(
@@ -280,16 +278,49 @@ class _DashboardViewState extends State<DashboardView> {
                   _FeatureCard(
                     icon: Icons.thermostat,
                     color: Colors.red,
-                    title: loc.heatAlert ?? 'হিট এলার্ট',
+                    title: loc.heatAlert,
                     onTap: () => Get.toNamed(AppRoutes.heatAlert),
                   ),
                   _FeatureCard(
                     icon: Icons.phone_in_talk,
                     color: Colors.green,
-                    title: loc.emergencyHelpline ?? 'জরুরি হেল্পলাইন',
+                    title: loc.emergencyHelpline,
                     onTap: () => Get.toNamed(AppRoutes.emergencyHelpline),
                   ),
                 ],
+              ),
+              const SizedBox(height: 24),
+              // Short Taposurakkha excerpt shown on Dashboard (localized inline)
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Builder(builder: (context) {
+                    // Use the app locale to choose short English/Bangla copy without modifying l10n files
+                    final LocalizationController lc = Get.find();
+                    final isBn = lc.locale.value.languageCode == 'bn';
+                    final shortText = isBn
+                        ? 'Taposurakkha একটি জনগণমুখী অ্যাপ যা মানুষকে তাপপ্রবাহের সময় নিরাপদ থাকতে সহায়তা করে। অ্যাপটি আবহাওয়ার পূর্বাভাস, নিরাপত্তা নির্দেশনা, নিকটস্থ স্বাস্থ্যসেবা ও ফার্মেসির তথ্য, এবং জরুরি নম্বরগুলো প্রদর্শন করে।'
+                        : 'Taposurakkha is a community-focused app that helps people stay safe during heatwaves. It provides weather forecasts, safety tips, nearby health services & pharmacies, and emergency contact numbers.';
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(loc.about, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        Text(shortText, style: const TextStyle(fontSize: 14)),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () => Get.toNamed(AppRoutes.about),
+                            child: const Text('Read more'),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
               ),
               const SizedBox(height: 24),
               // ...other dashboard content...
@@ -459,7 +490,7 @@ class _ForecastDayCard extends StatelessWidget {
         minTemp: '${day.minTemp.forecast.toStringAsFixed(1)}°C',
         maxTemp: '${day.maxTemp.forecast.toStringAsFixed(1)}°C',
         humidity: '${day.avgHumidity.forecast.toStringAsFixed(0)}%',
-        range: '(${day.avgTemp.lower}–${day.avgTemp.upper}°C)',
+        range: '(${day.avgTemp.lower}–${day.maxTemp.upper}°C)',
         extraRows: [
           _WeatherForecastList._detailRowPro('Max Temp', '${day.maxTemp.forecast.toStringAsFixed(1)}°C', '(${day.maxTemp.lower}–${day.maxTemp.upper}°C)', Icons.arrow_upward, Colors.redAccent),
           _WeatherForecastList._detailRowPro('Min Temp', '${day.minTemp.forecast.toStringAsFixed(1)}°C', '(${day.minTemp.lower}–${day.minTemp.upper}°C)', Icons.arrow_downward, Colors.blueAccent),

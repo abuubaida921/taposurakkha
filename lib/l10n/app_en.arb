@@ -137,5 +137,7 @@
   "searchPlaceHint": "Search place...",
   "enableLocationServices": "Please enable Location Services in settings.",
   "locationPermissionDenied": "Location permission denied.",
-  "placeDistance": "{name} - {distance} km away"
+  "placeDistance": "{name} - {distance} km away",
+  "shareApp": "Share App",
+  "shareAppMessage": "Check out Taposurakkha app - stay safe during heatwaves: https://example.com"
 }

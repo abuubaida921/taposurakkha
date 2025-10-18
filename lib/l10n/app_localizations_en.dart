@@ -426,4 +426,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String placeDistance(Object distance, Object name) {
     return '$name - $distance km away';
   }
+
+  @override
+  String get shareApp => 'Share App';
+
+  @override
+  String get shareAppMessage => 'Check out Taposurakkha app - stay safe during heatwaves: https://example.com';
 }

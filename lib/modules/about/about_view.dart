@@ -1,40 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:get/get.dart';
+import '../../l10n/app_localizations.dart';
+import '../../app/localization_controller.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final LocalizationController lc = Get.find();
+    final isBn = lc.locale.value.languageCode == 'bn';
+
+    final shareTooltip = isBn ? 'অ্যাপ শেয়ার করুন' : 'Share App';
+    final shareMessage = isBn
+        ? 'Taposurakkha অ্যাপ দেখুন — তাপপ্রবাহের সময় নিরাপদ থাকতে সহায়ক। ডাউনলোড করুন: https://example.com'
+        : 'Check out Taposurakkha — a helpful app for staying safe during heatwaves. Download: https://example.com';
+
+    final title = isBn ? 'তাপসুরক্ষা সম্পর্কে' : 'About Taposurakkha';
+
+    final longText = isBn
+        ? '''Taposurakkha একটি জনগণমুখী মোবাইল অ্যাপ যা তাপপ্রবাহের সময় মানুষের নিরাপত্তা ও স্বাস্থ্য রক্ষা করার লক্ষ্যে তৈরি করা হয়েছে। অ্যাপটিতে নিম্নলিখিত সুবিধা রয়েছে:
++
++- আবহাওয়ার পূর্বাভাস এবং ৭ দিনের তাপমাত্রা তথ্য
++- তাপপ্রবাহ সম্পর্কিত সতর্কতা ও সতর্কতা মাপক নির্দেশিকা
++- নিকটস্থ স্বাস্থ্যসেবা কেন্দ্র, ক্লিনিক ও ফার্মেসির অবস্থান
++- জরুরি যোগাযোগ নম্বরসহ হেল্পলাইন তালিকা
++- লোকেশন-ভিত্তিক সার্ভিস (স্থানীয় ফার্মেসি ও সেবা প্রদানকারীদের মানচিত্র)
++
++অ্যাপটির উদ্দেশ্য হচ্ছে জনগণকে দ্রুত তথ্য ও সাহায্য পৌঁছে দেয়া, যাতে গরমে সৃষ্ট স্বাস্থ্যঝুঁকি কমানো যায়। আমরা ভবিষ্যতে আরও ফিচার যোগ করার পরিকল্পনা করছি, যেমন—স্থানীয় সহায়তা শেয়ারিং, কেস-নোট, এবং সম্প্রদায়ভিত্তিক সতর্কতা।'''
+        : '''Taposurakkha is a community-focused mobile app built to help protect people's health and safety during heatwaves. Key features include:
++
++- Weather forecasts and 7-day temperature outlooks
++- Heatwave alerts and practical safety tips
++- Locations of nearby health centers, clinics and pharmacies
++- Emergency helplines and important contact numbers
++- Location-based services (maps of nearby pharmacies and service providers)
++
++The goal is to deliver timely information and access to help so heat-related risks can be reduced. We plan to add more features such as local assistance sharing, case notes, and community alerts in future updates.''';
+
     return Scaffold(
-      appBar: AppBar(title: const Text('About Bichar Achar')),
+      appBar: AppBar(
+        title: Text(title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            tooltip: shareTooltip,
+            onPressed: () async {
+              // Use the SharePlus API via Share.share (backwards compatible) or SharePlus.instance
+              try {
+                await Share.share(shareMessage);
+              } catch (e) {
+                // fallback
+                Share.share(shareMessage);
+              }
+            },
+          ),
+        ],
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              SizedBox(height: 16),
-              Text('Assalamu alaikum,', style: TextStyle(fontSize: 16)),
-              SizedBox(height: 12),
-              Text(
-                'Bichar Achar is a part of a campaign “Make judiciary digital” introduced by K.S. Azim, a 34 years old entrepreneur from Uttara, Dhaka, Bangladesh, founder of Bichar Achar. This is an online based platform designed primarily to ease the sufferings of people by providing a platform for free interactions between the citizens and the legal professionals.',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Users: Users can interact each other by private live chatting, Posts etc., can learn various legal matters by posting questions, reaching lawyers directly by texting them, also can get updates of their relevant cases through this platform.',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Law Professionals: For the law professionals, this platform is a nice opportunity to enjoy many free services including Vairtual Chamber/Firm Management system, Client Pool System, Case Management System - where they can add all relevant people of a particular case and share information, files among them with privacy, from anywhere of the world. They can also get chance of earning money by providing legal help to people.',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'We are working to bring more and more new features and services that would remove sufferings of people for getting legal help Insha Allah. The very next feature we are working on is the integration of Virtual Court, that can help many people to get proper legal information regarding a particular case and provide people the court orders etc.',
-                style: TextStyle(fontSize: 16),
-              ),
+            children: [
+              const SizedBox(height: 8),
+              // Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 12),
+              Text(longText, style: const TextStyle(fontSize: 16), textAlign: TextAlign.start),
+              const SizedBox(height: 20),
+              // Optional: provide a small 'Contact / Source' footer
+              Text(isBn ? 'বিস্তারিত জানতে আমাদের ওয়েবসাইট দেখুন বা হেল্পলাইন ব্যবহার করুন।' : 'For more details visit our website or use the helpline contacts.', style: TextStyle(color: Colors.grey[600])),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -42,4 +80,3 @@ class AboutView extends StatelessWidget {
     );
   }
 }
-
