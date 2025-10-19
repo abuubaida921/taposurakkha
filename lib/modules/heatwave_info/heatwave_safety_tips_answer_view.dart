@@ -22,7 +22,7 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
             if (q.bulletPoints != null)
               ...q.bulletPoints!.map((b) => _buildBulletPoint(b)).toList(),
             if (q.groups != null)
-              ...q.groups!.map((g) => _buildQGroup(g)).toList(),
+              ...q.groups!.map((g) => _buildQGroup(context, g)).toList(),
             if (q.specialInfo != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
@@ -47,7 +47,7 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
     );
   }
 
-  Widget _buildQGroup(HeatwaveSafetyTipGroup group) {
+  Widget _buildQGroup(BuildContext context, HeatwaveSafetyTipGroup group) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       color: Colors.grey[50],
@@ -66,12 +66,15 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
               children: [
                 const Text('ছবি: ', style: TextStyle(fontWeight: FontWeight.w500)),
                 Flexible(
-                  child: Image.asset(
-                    group.chobi,
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.contain,
-                    errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported),
+                  child: InkWell(
+                    onTap: () => _showLargeImage(context, group.chobi),
+                    child: Image.asset(
+                      group.chobi,
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.contain,
+                      errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported),
+                    ),
                   ),
                 ),
               ],
@@ -87,6 +90,34 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showLargeImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) {
+        return GestureDetector(
+          onTap: () => Navigator.of(ctx).pop(),
+          child: Container(
+            color: Colors.black87,
+            child: Center(
+              child: InteractiveViewer(
+                panEnabled: true,
+                boundaryMargin: const EdgeInsets.all(20),
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                  errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported, size: 64, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
