@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../l10n/app_localizations.dart';
 import 'heat_alert_section_model.dart';
 
@@ -9,6 +10,9 @@ class HeatAlertSectionDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final HeatAlertSection section = ModalRoute.of(context)!.settings.arguments as HeatAlertSection;
+
+    // prepare copyable text for the active section
+    final String copyText = _sectionCopyText(loc, section);
 
     Widget content;
     switch (section.type) {
@@ -28,12 +32,38 @@ class HeatAlertSectionDetailView extends StatelessWidget {
         title: Text(section.title, style: TextStyle(color: section.color)),
         iconTheme: IconThemeData(color: section.color),
         backgroundColor: section.color.withAlpha(25),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            tooltip: loc.localeName.startsWith('bn') ? 'কপি' : 'Copy',
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: copyText));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(loc.localeName.startsWith('bn') ? 'ক্লিপবোর্ডে কপি করা হয়েছে' : 'Copied to clipboard')),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: content,
       ),
     );
+  }
+
+  String _sectionCopyText(AppLocalizations loc, HeatAlertSection section) {
+    switch (section.type) {
+      case HeatAlertSectionType.importance:
+        return '${loc.heatAlertImportanceTitle}\n\n${loc.heatAlertImportancePoint1}\n${loc.heatAlertImportancePoint2}\n${loc.heatAlertImportancePoint3}';
+      case HeatAlertSectionType.forecast:
+        return '${loc.heatAlert7DayForecastTitle}\n\n${loc.heatAlertTemperatureChart}\n\n'
+            '${loc.heatAlertLevelWarning}: ${loc.heatAlertLevelWarningRange}\n${loc.heatAlertLevelWarningDesc}\n\n'
+            '${loc.heatAlertLevelRisk}: ${loc.heatAlertLevelRiskRange}\n${loc.heatAlertLevelRiskDesc}\n\n'
+            '${loc.heatAlertLevelAlert}: ${loc.heatAlertLevelAlertRange}\n${loc.heatAlertLevelAlertDesc}';
+      case HeatAlertSectionType.warningLevels:
+        return '${loc.heatAlertWarningLevelsTitle}\n\n${loc.heatAlertWarningLevelRed}\n${loc.heatAlertWarningLevelYellow}\n${loc.heatAlertWarningLevelGreen}';
+    }
   }
 
   Widget _buildImportanceSection(AppLocalizations loc) {
@@ -244,4 +274,3 @@ class HeatAlertSectionDetailView extends StatelessWidget {
     );
   }
 }
-
