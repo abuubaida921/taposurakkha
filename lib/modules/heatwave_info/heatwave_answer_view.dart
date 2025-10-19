@@ -16,7 +16,8 @@ class HeatwaveAnswerView extends StatelessWidget {
       // Special case: show health issues cards
       answerWidget = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _localizedHeatHealthIssues(loc).map((issue) => _buildHealthIssueCard(issue, loc)).toList(),
+        // pass context so cards can open large image
+        children: _localizedHeatHealthIssues(loc).map((issue) => _buildHealthIssueCard(context, issue, loc)).toList(),
       );
     } else {
       answerWidget = Column(
@@ -38,7 +39,8 @@ class HeatwaveAnswerView extends StatelessWidget {
       appBar: AppBar(
         title: Text(q.question, style: TextStyle(color: q.color)),
         iconTheme: IconThemeData(color: q.color),
-        backgroundColor: q.color.withOpacity(0.1),
+        // Use withAlpha to avoid deprecated withOpacity
+        backgroundColor: q.color.withAlpha((0.1 * 255).round()),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -95,7 +97,7 @@ class HeatwaveAnswerView extends StatelessWidget {
     ];
   }
 
-  Widget _buildHealthIssueCard(HeatHealthIssue issue, AppLocalizations loc) {
+  Widget _buildHealthIssueCard(BuildContext context, HeatHealthIssue issue, AppLocalizations loc) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       color: Colors.red[50],
@@ -106,19 +108,25 @@ class HeatwaveAnswerView extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                issue.imageAsset,
-                width: 64,
-                height: 64,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    Container(
-                      width: 64,
-                      height: 64,
-                      color: Colors.grey[300],
-                      child: const Icon(
-                          Icons.image_not_supported, color: Colors.grey),
-                    ),
+              child: GestureDetector(
+                onTap: () => _showLargeImage(context, issue.imageAsset),
+                child: Hero(
+                  tag: issue.imageAsset,
+                  child: Image.asset(
+                    issue.imageAsset,
+                    width: 64,
+                    height: 64,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Container(
+                          width: 64,
+                          height: 64,
+                          color: Colors.grey[300],
+                          child: const Icon(
+                              Icons.image_not_supported, color: Colors.grey),
+                        ),
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -158,6 +166,35 @@ class HeatwaveAnswerView extends StatelessWidget {
       ),
     );
   }
+
+  void _showLargeImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) {
+        return GestureDetector(
+          onTap: () => Navigator.of(ctx).pop(),
+          child: Container(
+            color: Colors.black87,
+            child: Center(
+              child: InteractiveViewer(
+                panEnabled: true,
+                boundaryMargin: const EdgeInsets.all(20),
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: Hero(
+                  tag: imagePath,
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.contain,
+                    errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported, size: 64, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
-
-
