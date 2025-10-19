@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../l10n/app_localizations.dart';
 import 'heatwave_question_list_view.dart';
 import 'model/heat_health_issue.dart';
@@ -41,12 +42,52 @@ class HeatwaveAnswerView extends StatelessWidget {
         iconTheme: IconThemeData(color: q.color),
         // Use withAlpha to avoid deprecated withOpacity
         backgroundColor: q.color.withAlpha((0.1 * 255).round()),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            tooltip: loc.localeName.startsWith('bn') ? 'কপি' : 'Copy',
+            onPressed: () async {
+              final copyText = _composeAnswerCopyText(loc, q);
+              await Clipboard.setData(ClipboardData(text: copyText));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(loc.localeName.startsWith('bn') ? 'ক্লিপবোর্ডে কপি করা হয়েছে' : 'Copied to clipboard'),
+              ));
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: answerWidget,
       ),
     );
+  }
+
+  String _composeAnswerCopyText(AppLocalizations loc, HeatwaveQuestion q) {
+    final sb = StringBuffer();
+    sb.writeln(q.question);
+    sb.writeln();
+
+    if (q.question == loc.healthSymptomsQ) {
+      for (final issue in _localizedHeatHealthIssues(loc)) {
+        sb.writeln(issue.name);
+        sb.writeln('${loc.causeLabel}: ${issue.cause}');
+        sb.writeln('${loc.symptomLabel}: ${issue.symptom}');
+        sb.writeln();
+      }
+    } else {
+      if (q.answer != null && q.answer!.trim().isNotEmpty) {
+        sb.writeln(q.answer!.trim());
+        sb.writeln();
+      }
+      if (q.bulletPoints != null && q.bulletPoints!.isNotEmpty) {
+        for (final b in q.bulletPoints!) {
+          sb.writeln('- $b');
+        }
+      }
+    }
+
+    return sb.toString();
   }
 
   Widget _buildBulletPoint(String text) {

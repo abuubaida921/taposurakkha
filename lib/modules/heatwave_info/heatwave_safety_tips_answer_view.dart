@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'heatwave_safety_tip_question_model.dart';
 
 class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
@@ -13,6 +14,17 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
         title: Text(q.question, style: TextStyle(color: q.color)),
         iconTheme: IconThemeData(color: q.color),
         backgroundColor: q.color.withAlpha(25),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            tooltip: 'Copy',
+            onPressed: () async {
+              final text = _composeCopyText(q);
+              await Clipboard.setData(ClipboardData(text: text));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied to clipboard')));
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -32,6 +44,43 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _composeCopyText(HeatwaveSafetyTipQuestion q) {
+    final sb = StringBuffer();
+    sb.writeln(q.question);
+    sb.writeln();
+
+    if (q.bulletPoints != null && q.bulletPoints!.isNotEmpty) {
+      sb.writeln('Points:');
+      for (final p in q.bulletPoints!) {
+        sb.writeln('- $p');
+      }
+      sb.writeln();
+    }
+
+    if (q.groups != null && q.groups!.isNotEmpty) {
+      for (final g in q.groups!) {
+        sb.writeln(g.group);
+        sb.writeln('কারণ: ${g.karon}');
+        sb.writeln('লক্ষণ: ${g.lokkho}');
+        if (g.chobi.isNotEmpty) sb.writeln('ছবি: ${g.chobi}');
+        if (g.tips.isNotEmpty) {
+          sb.writeln('টিপস:');
+          for (final tip in g.tips) {
+            sb.writeln('- $tip');
+          }
+        }
+        sb.writeln();
+      }
+    }
+
+    if (q.specialInfo != null && q.specialInfo!.isNotEmpty) {
+      sb.writeln('Note:');
+      sb.writeln(q.specialInfo);
+    }
+
+    return sb.toString();
   }
 
   Widget _buildBulletPoint(String text) {
