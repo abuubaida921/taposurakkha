@@ -62,7 +62,7 @@ class HeatwaveSafetyTipsQuestionListView extends StatelessWidget {
             group: loc.forPregnantWomen,
             karon: loc.pregnantHeatRisk,
             lokkho: loc.pregnantSymptoms,
-            chobi: 'assets/images/pregnant.png',
+            chobi: 'assets/images/pregnant_woman.png',
             tips: [
               loc.avoidGoingOutInHeat,
               loc.drinkColdBeverages,
@@ -73,7 +73,7 @@ class HeatwaveSafetyTipsQuestionListView extends StatelessWidget {
             group: loc.forOutdoorWorkers,
             karon: loc.outdoorWorkersRisk,
             lokkho: loc.outdoorWorkersSymptoms,
-            chobi: 'assets/images/worker.png',
+            chobi: 'assets/images/outdoor_worker.png',
             tips: [
               loc.takeAdequateRest,
               loc.drinkWaterAndElectrolytes,
@@ -84,7 +84,7 @@ class HeatwaveSafetyTipsQuestionListView extends StatelessWidget {
             group: loc.forSickOrChronicPatients,
             karon: loc.sickHeatRisk,
             lokkho: loc.sickSymptoms,
-            chobi: 'assets/images/sick.png',
+            chobi: 'assets/images/ill_people.png',
             tips: [
               loc.avoidGoingOutInHeat,
               loc.drinkPlentyOfWater,

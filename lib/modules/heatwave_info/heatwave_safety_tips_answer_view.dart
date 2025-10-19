@@ -68,8 +68,8 @@ class HeatwaveSafetyTipsAnswerView extends StatelessWidget {
                 Flexible(
                   child: Image.asset(
                     group.chobi,
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     fit: BoxFit.contain,
                     errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported),
                   ),
