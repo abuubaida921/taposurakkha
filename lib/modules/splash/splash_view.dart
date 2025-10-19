@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 
 import '../../app/beautiful_loader.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -36,16 +35,25 @@ class _SplashScreenState extends State<SplashScreen>
         deviceData = _readWebBrowserInfo(await deviceInfoPlugin.webBrowserInfo);
       } else {
         deviceData = switch (defaultTargetPlatform) {
-          TargetPlatform.android => _readAndroidBuildData(await deviceInfoPlugin.androidInfo),
-          TargetPlatform.iOS => _readIosDeviceInfo(await deviceInfoPlugin.iosInfo),
-          TargetPlatform.linux => _readLinuxDeviceInfo(await deviceInfoPlugin.linuxInfo),
-          TargetPlatform.windows => _readWindowsDeviceInfo(await deviceInfoPlugin.windowsInfo),
-          TargetPlatform.macOS => _readMacOsDeviceInfo(await deviceInfoPlugin.macOsInfo),
-          TargetPlatform.fuchsia => <String, dynamic>{'Error:': 'Fuchsia platform isn\'t supported'},
+          TargetPlatform.android =>
+            _readAndroidBuildData(await deviceInfoPlugin.androidInfo),
+          TargetPlatform.iOS =>
+            _readIosDeviceInfo(await deviceInfoPlugin.iosInfo),
+          TargetPlatform.linux =>
+            _readLinuxDeviceInfo(await deviceInfoPlugin.linuxInfo),
+          TargetPlatform.windows =>
+            _readWindowsDeviceInfo(await deviceInfoPlugin.windowsInfo),
+          TargetPlatform.macOS =>
+            _readMacOsDeviceInfo(await deviceInfoPlugin.macOsInfo),
+          TargetPlatform.fuchsia => <String, dynamic>{
+              'Error:': 'Fuchsia platform isn\'t supported'
+            },
         };
       }
     } on PlatformException {
-      deviceData = <String, dynamic>{'Error:': 'Failed to get platform version.'};
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
     }
     if (!mounted) return;
     setState(() {
@@ -225,10 +233,15 @@ class _SplashScreenState extends State<SplashScreen>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           title: Text(message, style: TextStyle(fontSize: 16)),
           content: isError
-              ? Text('Please try again', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20))
+              ? Text('Please try again',
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20))
               : Icon(Icons.error, color: Colors.red, size: 48),
           actions: [
             InkWell(
@@ -241,7 +254,9 @@ class _SplashScreenState extends State<SplashScreen>
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: Colors.white,
                 ),
-                child: Text("Exit", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                child: Text("Exit",
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -256,14 +271,34 @@ class _SplashScreenState extends State<SplashScreen>
       // backgroundColor: AppColors.appBaseColor,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              SizedBox(width: 150, height: 150, child: Image.asset('assets/images/logo.png')),
-              SizedBox(height: 24),
-            Text('তাপসুরক্ষা', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            BeautifulLoader()
+              Align(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                        width: 150,
+                        height: 150,
+                        child: Image.asset('assets/images/logo.png')),
+                    SizedBox(height: 24),
+                    Text('তাপসুরক্ষা',
+                        style: TextStyle(
+                            fontSize: 32, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 16),
+                    BeautifulLoader(),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text('Version 1.0.0',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                ),
+              ),
             ],
           ),
         ),
