@@ -20,6 +20,9 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   LatLng? userLocation;
   String searchQuery = "";
 
+  // New: selected dataset source
+  String selectedSource = 'all'; // values: 'all', 'healthcare_pharmacy', 'clinic', 'water_point'
+
   // Map controller and zoom state for zoom + location controls
   final MapController _mapController = MapController();
   double _zoom = 13.0;
@@ -27,20 +30,24 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   @override
   void initState() {
     super.initState();
-    loadGeoJSON();
+    // Load all three GeoJSON files
+    loadGeoJSON('assets/healthcare_pharmacy.geojson', 'healthcare_pharmacy');
+    loadGeoJSON('assets/clinic.geojson', 'clinic');
+    loadGeoJSON('assets/water_point.geojson', 'water_point');
     getUserLocation();
   }
 
-  Future<void> loadGeoJSON() async {
+  // Modified loader: takes an asset path and a source tag
+  Future<void> loadGeoJSON(String assetPath, String source) async {
     try {
-      final data =
-      await rootBundle.loadString('assets/healthcare_pharmacy.geojson');
+      final data = await rootBundle.loadString(assetPath);
       final jsonResult = json.decode(data);
 
-      log("✅ GeoJSON loaded with ${jsonResult['features'].length} features");
+      final features = jsonResult['features'] ?? [];
+      log("✅ GeoJSON loaded from $assetPath with ${features.length} features");
 
       final List<Map<String, dynamic>> loadedPlaces = [];
-      for (var feature in jsonResult['features']) {
+      for (var feature in features) {
         final coords = feature['geometry']?['coordinates'];
         final props = feature['properties'] ?? {};
 
@@ -50,13 +57,16 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
             'type': props['type'] ?? 'N/A',
             'lat': coords[1],
             'lng': coords[0],
+            'source': source,
+            'raw_props': props,
           });
         }
       }
 
-      setState(() => places = loadedPlaces);
+      // Merge into master list on the main thread
+      setState(() => places = [...places, ...loadedPlaces]);
     } catch (e) {
-      log("❌ Error loading GeoJSON: $e");
+      log("❌ Error loading GeoJSON ($assetPath): $e");
     }
   }
 
@@ -86,17 +96,23 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
 
   double calculateDistance(LatLng from, LatLng to) {
     return Geolocator.distanceBetween(
-        from.latitude, from.longitude, to.latitude, to.longitude) /
+            from.latitude, from.longitude, to.latitude, to.longitude) /
         1000; // km
   }
 
   @override
   Widget build(BuildContext context) {
     final filteredPlaces = places.where((place) {
-      return place['name']
+      final matchesQuery = place['name']
           .toString()
           .toLowerCase()
           .contains(searchQuery.toLowerCase());
+
+      final matchesSource = (selectedSource == 'all')
+          ? true
+          : place['source'] == selectedSource;
+
+      return matchesQuery && matchesSource;
     }).toList();
 
     return Scaffold(
@@ -116,19 +132,45 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
               onChanged: (value) => setState(() => searchQuery = value),
             ),
           ),
+
+          // Dataset selector
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            child: Row(
+              children: [
+                const Text('Dataset:'),
+                const SizedBox(width: 8),
+                DropdownButton<String>(
+                  value: selectedSource,
+                  items: const [
+                    DropdownMenuItem(value: 'all', child: Text('All')),
+                    DropdownMenuItem(value: 'healthcare_pharmacy', child: Text('Pharmacies')),
+                    DropdownMenuItem(value: 'clinic', child: Text('Clinics')),
+                    DropdownMenuItem(value: 'water_point', child: Text('Water points')),
+                  ],
+                  onChanged: (v) => setState(() => selectedSource = v ?? 'all'),
+                ),
+                const Spacer(),
+                // Count of displayed places
+                Text('${filteredPlaces.length} places'),
+              ],
+            ),
+          ),
+
           Expanded(
             child: Stack(
               children: [
                 FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                    initialCenter: userLocation ?? const LatLng(23.8103, 90.4125), // Dhaka fallback
+                    initialCenter:
+                        userLocation ?? const LatLng(23.8103, 90.4125), // Dhaka fallback
                     initialZoom: _zoom,
                   ),
                   children: [
                     TileLayer(
                       urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                       subdomains: const ['a', 'b', 'c'],
                     ),
                     if (userLocation != null)
@@ -151,6 +193,19 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                           distance = calculateDistance(userLocation!, point);
                         }
 
+                        // Choose marker icon / color based on source
+                        Widget markerIcon;
+                        final src = place['source'] ?? 'healthcare_pharmacy';
+                        if (src == 'healthcare_pharmacy') {
+                          markerIcon = const Icon(Icons.local_pharmacy, color: Colors.red, size: 34);
+                        } else if (src == 'clinic') {
+                          markerIcon = const Icon(Icons.local_hospital, color: Colors.green, size: 34);
+                        } else if (src == 'water_point') {
+                          markerIcon = const Icon(Icons.water_drop, color: Colors.blue, size: 32);
+                        } else {
+                          markerIcon = const Icon(Icons.location_on, color: Colors.red, size: 32);
+                        }
+
                         return Marker(
                           point: point,
                           width: 160,
@@ -169,12 +224,10 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                             },
                             child: Column(
                               children: [
-                                const Icon(Icons.location_on,
-                                    color: Colors.red, size: 32),
+                                markerIcon,
                                 Container(
                                   width: 150,
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 4),
+                                  padding: const EdgeInsets.symmetric(horizontal: 4),
                                   child: Text(
                                     place['name'],
                                     textAlign: TextAlign.center,
@@ -220,7 +273,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                             ));
                           }
                         },
-                        child: const Icon(Icons.my_location,color: Colors.white),
+                        child: const Icon(Icons.my_location, color: Colors.white),
                       ),
                       const SizedBox(height: 8),
 
@@ -235,7 +288,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                           final center = userLocation ?? const LatLng(23.8103, 90.4125);
                           _mapController.move(center, _zoom);
                         },
-                        child: const Icon(Icons.zoom_in,color: Colors.white),
+                        child: const Icon(Icons.zoom_in, color: Colors.white),
                       ),
                       const SizedBox(height: 8),
 
@@ -250,7 +303,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
                           final center = userLocation ?? const LatLng(23.8103, 90.4125);
                           _mapController.move(center, _zoom);
                         },
-                        child: const Icon(Icons.zoom_out,color: Colors.white,),
+                        child: const Icon(Icons.zoom_out, color: Colors.white,),
                       ),
                     ],
                   ),

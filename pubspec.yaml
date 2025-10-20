@@ -78,6 +78,8 @@ flutter:
     - assets/fonts/SolaimanLipi_20-04-07.ttf
     - .env
     - assets/healthcare_pharmacy.geojson
+    - assets/clinic.geojson
+    - assets/water_point.geojson
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
