@@ -51,9 +51,17 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
         final coords = feature['geometry']?['coordinates'];
         final props = feature['properties'] ?? {};
 
-        if (coords != null && coords.length >= 2) {
+        // Prefer 'name' but fall back to 'name_en'. If both missing/empty, skip this feature.
+        String? name;
+        if (props['name'] != null && props['name'].toString().trim().isNotEmpty) {
+          name = props['name'].toString();
+        } else if (props['name_en'] != null && props['name_en'].toString().trim().isNotEmpty) {
+          name = props['name_en'].toString();
+        }
+
+        if (coords != null && coords.length >= 2 && name != null) {
           loadedPlaces.add({
-            'name': props['name'] ?? 'Unknown',
+            'name': name,
             'type': props['type'] ?? 'N/A',
             'lat': coords[1],
             'lng': coords[0],
